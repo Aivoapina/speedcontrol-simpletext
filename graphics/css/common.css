@@ -12,18 +12,76 @@ html, body {
 	justify-content: center; /* Aligns horizontally centre. */
 	
 	/* Change the default text font, size and colour. */
-	font-family: 'Arial';
-	color: black;
-	font-size: 20px;
+	font-family: 'PT Sans Narrow';
+	color: white;
+	font-weight: 700;
+	font-size: 60vh;
+	text-shadow: 3px 3px rgba(0,0,0,0.7);
+}
+
+.twitchLogo {
+	background-image: url(Twitch_Logo.png);
+	background-size: 50vh;
+  display: inline-flex;
+  width: 50vh; 
+  margin: 0 10px 0 0;
+  height: 50vh;
+  content: "";
+}
+
+.twitchLogo {
+  display: inline-flex;
+	align-items: center;
+}
+
+.emptylogo {
+  display: inline-flex;
+	align-items: center;
+}
+
+.gameInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gameInfo #gameTitle {
+  font-size: 36vh;
+  margin-bottom: -6vh;
+}
+
+.gameInfo #gameCatPlatCarousel {
+  font-size: 16vh;
+}
+
+#player {
+	opacity: 1;
+  transition: opacity 0.5s;
+}
+
+#textCarousel {
+	opacity: 1;
+  transition: opacity 0.5s;
+}
+
+#gameCatPlatCarousel {
+	opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.hide {
+  opacity: 0 !important;
+}
+
+.timer_finished {
+  color: #6ec3e8;
+}
+
+.timer_stopped {
+  color: #90a9b3;
 }
 
 /* Adds text before/after the estimate to improve the look. */
 /* You could also use this idea with things that aren't the estimate. */
-#gameEstimate:before {content: 'EST: ';} /* A label to explain what the numbers actually are. */
-
-/* Different colours for each state the timer can be in. */
-/* The state is set by JavaScript in timer.js. */
-.timer_running {color: black;}
-.timer_stopped {color: gray;}
-.timer_paused {color: gray;}
-.timer_finished {color: green;}
+#gameEstimate:before {content: '';} /* A label to explain what the numbers actually are. */

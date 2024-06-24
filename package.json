@@ -16,6 +16,14 @@
     "bundleDependencies": {
       "nodecg-speedcontrol": "^2.0.0"
     },
+    "dashboardPanels": [
+      {
+        "name": "Donation",
+        "title": "Donation settings",
+        "width": 3,
+        "file": "donations.html"
+      }
+    ],
     "graphics": [
       {
         "file": "game-title.html",
@@ -53,10 +61,33 @@
         "height": 720
       },
       {
-        "file": "donation-total.html",
+        "file": "donations.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "time.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "game-catplat-carousel.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "text-carousel.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "game-info.html",
         "width": 1280,
         "height": 720
       }
     ]
+  },
+  "scripts": {
+    "start-nodecg": "node ../../index.js"
   }
 }
