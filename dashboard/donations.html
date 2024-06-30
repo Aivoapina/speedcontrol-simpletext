@@ -10,16 +10,26 @@
     #url {
       width: 350px;
     }
+    #donationInfo {
+      height: 30px;
+    }
   </style>
 </head>
 
 <body>
   <div>
     <div>
-      <label for="url">Donation Url</label>
+      <label for="url">Lahjoitus URL</label>
       <input id="url" type="text" />
     </div>
-    <button id="setUrl">Done</button>
+    <button id="setUrl">Aseta</button>
+  </div>
+
+  <br />
+
+  <div>
+    <button id="toggleDonationStatus">Lahjoja, LAHJOJA!</button>
+    <h3 id="donationInfo"></h3>
   </div>
   <script>
     const speedcontrolBundle = 'nodecg-speedcontrol';
@@ -27,17 +37,37 @@
     const urlInput = document.querySelector('#url');
     const setUrlButton = document.querySelector('#setUrl');
 
-    const urlReplicant = nodecg.Replicant('donateUrl', speedcontrolBundle);
+    const toggleDonationStatusElem = document.getElementById('toggleDonationStatus');
+    const donationInfoElem = document.getElementById('donationInfo');
 
-    NodeCG.waitForReplicants(urlReplicant).then(() => {
+    const urlReplicant = nodecg.Replicant('donateUrl', speedcontrolBundle);
+    const donateReplicant = nodecg.Replicant('donateStatus', speedcontrolBundle);
+
+    NodeCG.waitForReplicants(urlReplicant, donateReplicant).then(() => {
       urlReplicant.on('change', url => {
         urlInput.value = url;
+      });
+
+      donateReplicant.on('change', status => {
+        if (status) {
+          donationInfoElem.innerHTML = 'Lahjoituksia luettavana!'
+        } else {
+          donationInfoElem.innerHTML = ''
+        }
       });
     });
 
     setUrlButton.onclick = () => {
       console.log(urlInput.value);
       urlReplicant.value = urlInput.value;
+    }
+
+    toggleDonationStatusElem.onclick = () => {
+      if (donateReplicant.value === undefined) {
+        donateReplicant.value = true;
+      } else {
+        donateReplicant.value = !donateReplicant.value;
+      }
     }
 
   </script>

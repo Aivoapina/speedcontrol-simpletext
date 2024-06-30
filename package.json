@@ -84,6 +84,16 @@
         "file": "game-info.html",
         "width": 1280,
         "height": 720
+      },
+      {
+        "file": "player-dashboard.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "racetime.html",
+        "width": 1280,
+        "height": 720
       }
     ]
   },

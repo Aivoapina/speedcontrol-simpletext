@@ -1,0 +1,38 @@
+html, body {
+  margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	
+	font-family: 'PT Sans Narrow';
+	color: white;
+	font-weight: 700;
+	font-size: 35vh;
+	text-shadow: 3px 3px rgba(0,0,0,0.7);
+  background-color: black;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+	justify-content: center;
+}
+
+#timer {
+  height: 50%;
+}
+
+#donationInfo {
+  height: 50%;
+  line-height: 50vh;
+  font-size: 15vh;
+}
+
+.timer_finished {
+  color: #6ec3e8;
+}
+
+.timer_stopped {
+  color: #90a9b3;
+}

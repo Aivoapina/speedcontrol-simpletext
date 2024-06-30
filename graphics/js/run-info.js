@@ -12,6 +12,7 @@ $(() => {
   const gameEstimate = $('#gameEstimate'); // game-estimate.html
   const player = $('#player'); // player.html
   const twitch = $('#twitch'); // twitch.html
+  const donationInfoElem = document.getElementById('donationInfo');
 
   let playerCycle = 0;
   let textCycle = 0;
@@ -29,6 +30,7 @@ $(() => {
   const runDataActiveRun = nodecg.Replicant('runDataActiveRun', speedcontrolBundle);
   const runDataArray = nodecg.Replicant('runDataArray', speedcontrolBundle);
   const runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', speedcontrolBundle);
+  const donateStatus = nodecg.Replicant('donateStatus', speedcontrolBundle);
 
   runDataActiveRunSurrounding.on('change', newVal => {
     if (newVal)
@@ -40,6 +42,14 @@ $(() => {
     if (newVal)
       updateSceneFields(newVal);
   });
+
+  donateStatus.on('change', newVal => {
+    if (newVal) {
+      donationInfoElem.innerHTML = 'Lahjoituksia luettavana!'
+    } else {
+      donationInfoElem.innerHTML = '';
+    }
+  })
 
   const updateNextGame = (runDataActiveRunSurrounding) => {
     runDataArray.value.forEach(runData => {

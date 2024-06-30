@@ -82,6 +82,14 @@ html, body {
   color: #90a9b3;
 }
 
+.place_1 {
+  color: gold;
+}
+
+.place_2 {
+  color: #6ec3e8;
+}
+
 /* Adds text before/after the estimate to improve the look. */
 /* You could also use this idea with things that aren't the estimate. */
 #gameEstimate:before {content: '';} /* A label to explain what the numbers actually are. */
