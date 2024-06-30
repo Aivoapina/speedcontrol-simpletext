@@ -5,13 +5,10 @@ html, body {
 	width: 100%;
 	height: 100%;
 	
-	/* Turns the whole page into a flex box, so we can position the text horizontally/vertically. */
 	display: flex;
-	/* Options for settings below: flex-start (top/left), center, flex-end (bottom/right). */
-	align-items: center; /* Aligns vertically centre. */
-	justify-content: center; /* Aligns horizontally centre. */
+	align-items: center;
+	justify-content: center;
 	
-	/* Change the default text font, size and colour. */
 	font-family: 'PT Sans Narrow';
 	color: white;
 	font-weight: 700;
@@ -19,7 +16,7 @@ html, body {
 	text-shadow: 3px 3px rgba(0,0,0,0.7);
 }
 
-.twitchLogo {
+.twitchLogo::before {
 	background-image: url(Twitch_Logo.png);
 	background-size: 50vh;
   display: inline-flex;
