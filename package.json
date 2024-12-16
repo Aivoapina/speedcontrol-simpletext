@@ -98,6 +98,10 @@
     ]
   },
   "scripts": {
-    "start-nodecg": "node ../../index.js"
+    "start-nodecg": "node ../../index.js",
+    "prettier": "prettier graphics/ dashboard/ --write"
+  },
+  "devDependencies": {
+    "prettier": "3.4.2"
   }
 }

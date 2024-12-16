@@ -1,26 +1,27 @@
-html, body {
-	/* Removes the page's margin/padding and makes it fill the whole browser. */
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	height: 100%;
-	
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	
-	font-family: 'PT Sans Narrow';
-	color: white;
-	font-weight: 700;
-	font-size: 60vh;
-	text-shadow: 3px 3px rgba(0,0,0,0.7);
+html,
+body {
+  /* Removes the page's margin/padding and makes it fill the whole browser. */
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "PT Sans Narrow";
+  color: white;
+  font-weight: 700;
+  font-size: 60vh;
+  text-shadow: 3px 3px rgba(0, 0, 0, 0.7);
 }
 
 .twitchLogo::before {
-	background-image: url(Twitch_Logo.png);
-	background-size: 50vh;
+  background-image: url(Twitch_Logo.png);
+  background-size: 50vh;
   display: inline-flex;
-  width: 50vh; 
+  width: 50vh;
   margin: 0 10px 0 0;
   height: 50vh;
   content: "";
@@ -28,12 +29,12 @@ html, body {
 
 .twitchLogo {
   display: inline-flex;
-	align-items: center;
+  align-items: center;
 }
 
 .emptylogo {
   display: inline-flex;
-	align-items: center;
+  align-items: center;
 }
 
 .gameInfo {
@@ -53,17 +54,17 @@ html, body {
 }
 
 #player {
-	opacity: 1;
+  opacity: 1;
   transition: opacity 0.5s;
 }
 
 #textCarousel {
-	opacity: 1;
+  opacity: 1;
   transition: opacity 0.5s;
 }
 
 #gameCatPlatCarousel {
-	opacity: 1;
+  opacity: 1;
   transition: opacity 0.5s;
 }
 
@@ -89,4 +90,6 @@ html, body {
 
 /* Adds text before/after the estimate to improve the look. */
 /* You could also use this idea with things that aren't the estimate. */
-#gameEstimate:before {content: '';} /* A label to explain what the numbers actually are. */
+#gameEstimate:before {
+  content: "";
+} /* A label to explain what the numbers actually are. */
