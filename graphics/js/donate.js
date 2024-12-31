@@ -2,26 +2,13 @@ $(() => {
   const speedcontrolBundle = "nodecg-speedcontrol";
 
   const donations = $("#donations");
-  const donateUrlReplicant = nodecg.Replicant("donateUrl", speedcontrolBundle);
 
-  let donateUrl = donateUrlReplicant.value;
+  const donateAmountReplicant = nodecg.Replicant(
+    "donateAmount",
+    speedcontrolBundle,
+  );
 
-  donateUrlReplicant.on("change", (val) => {
-    donateUrl = val;
-    updateDonations();
+  donateAmountReplicant.on("change", (val) => {
+    donations.html(parseInt(val) + "€");
   });
-
-  const updateDonations = () => {
-    if (!donateUrl) return;
-
-    fetch(donateUrl)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        donations.html(data.gift.amount + "€");
-      });
-  };
-
-  setInterval(updateDonations, 10000);
 });

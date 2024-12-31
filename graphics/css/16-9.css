@@ -1,0 +1,61 @@
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  align-items: center;
+
+  width: 460px;
+  height: 579px;
+  top: 420px;
+  left: 0px;
+}
+
+.playerContainer {
+  padding: 1px;
+  font-size: 32px;
+  width: 419px;
+  margin: 20px;
+}
+
+#gameContainer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  top: 821px;
+  left: 461px;
+  width: 997px;
+  height: 178px;
+}
+
+#gameTitle {
+  font-size: 44px;
+}
+
+#timer {
+  position: absolute;
+  width: 459px;
+  left: 1461px;
+  top: 821px;
+
+  font-size: 82px;
+  line-height: 180px;
+}
+
+#commentatorContainer {
+  height: 48px;
+}
+
+#sponsor {
+  display: block;
+  max-width: 80%;
+  margin-top: 200px;
+}
+
+.twitchLogo::before {
+  margin: 4px 10px 2px 0;
+  background-size: 24px;
+  width: 24px;
+  height: 24px;
+}

@@ -2,7 +2,7 @@
 $(() => {
   const speedcontrolBundle = "nodecg-speedcontrol";
 
-  const timerElem = $("#timer");
+  const timerElem = $("#finishTime");
 
   const playerNumber = parseInt(window.location.hash.replace("#", "")) - 1 || 0;
 

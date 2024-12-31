@@ -18,7 +18,7 @@ body {
 }
 
 .twitchLogo::before {
-  background-image: url(Twitch_Logo.png);
+  background-image: url(../img/Twitch_Logo.png);
   background-size: 50vh;
   display: inline-flex;
   width: 50vh;

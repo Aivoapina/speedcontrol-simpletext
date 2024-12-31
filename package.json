@@ -22,6 +22,18 @@
         "title": "Donation settings",
         "width": 3,
         "file": "donations.html"
+      },
+      {
+        "name": "Commentators",
+        "title": "Commentators",
+        "width": 3,
+        "file": "commentators.html"
+      },
+      {
+        "name": "Text Carousel",
+        "title": "Text Carousel",
+        "width": 3,
+        "file": "textcarousel.html"
       }
     ],
     "graphics": [
@@ -94,6 +106,36 @@
         "file": "racetime.html",
         "width": 1280,
         "height": 720
+      },
+      {
+        "file": "bottombar.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "16-9.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "4-3.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "upcoming.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "16-9-race.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "4-3-race.html",
+        "width": 1920,
+        "height": 1080
       }
     ]
   },
@@ -103,5 +145,8 @@
   },
   "devDependencies": {
     "prettier": "3.4.2"
+  },
+  "dependencies": {
+    "node-fetch": "2.7.0"
   }
 }

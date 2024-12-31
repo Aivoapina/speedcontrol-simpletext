@@ -1,0 +1,56 @@
+.bottomBar {
+  width: 1920px;
+  height: 80px;
+  bottom: 0;
+
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 38px;
+}
+
+.eventContainer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 270px;
+  height: 100%;
+  left: 0;
+  font-family: "Fugaz One";
+}
+
+#eventName {
+  font-size: 32px;
+  line-height: 1em;
+}
+
+#eventSeason {
+  line-height: 1em;
+  font-size: 20px;
+  color: rgb(230, 230, 230);
+  font-weight: 100;
+}
+
+.bottomBar span {
+  position: absolute;
+  text-align: center;
+}
+
+#donations {
+  left: 270px;
+  width: 190px;
+}
+
+#textCarousel {
+  width: 1285px;
+  left: 460px;
+  font-size: 32px;
+}
+
+#time {
+  width: 175px;
+  left: 1745px;
+}
