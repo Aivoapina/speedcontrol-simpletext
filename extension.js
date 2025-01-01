@@ -21,6 +21,7 @@ module.exports = async function (nodecg) {
     if (!donateUrl) return;
 
     const data = await fetchJson(donateUrl);
+    if (!data) return;
     const total = data.data.total_amount;
     
     donateAmountReplicant.value = total;
@@ -30,6 +31,7 @@ module.exports = async function (nodecg) {
     if (!donateMessagesUrl) return;
 
     const data = await fetchJson(donateMessagesUrl);
+    if (!data) return;
 
     const newDonates = data.data.filter(donate => (
       !donateMessages.value.find(d => d.id === donate.id)
@@ -61,7 +63,12 @@ const fetchJson = async (url) => {
     "X-Locale": "fi",
     "X-Site-Id": "Dp9tjHj3gsVn"
   };
-  const res = await fetch(url, { headers });
-  return res.json();
+  try {
+    const res = await fetch(url, { headers });
+    return res.json();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
 

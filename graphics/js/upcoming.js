@@ -6,8 +6,7 @@ $(() => {
 
   runDataArray.on("change", (newVal) => {
     if (newVal) {
-      console.log(newVal);
-      const now = new Date(2025, 0, 3, 21, 0, 0);
+      const now = new Date();
 
       newVal.forEach((run, index) => {
         if (!newVal[index + 1]) return;

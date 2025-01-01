@@ -165,7 +165,7 @@ $(() => {
     }, 1000);
   };
 
-  setInterval(sceneUpdater, 5000);
+  setInterval(sceneUpdater, 15000);
   setInterval(textCarouselUpdater, 25000);
 
   textCarouselUpdater();
