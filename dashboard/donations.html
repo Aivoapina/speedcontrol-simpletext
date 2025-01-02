@@ -91,9 +91,6 @@
         });
 
         donateMessagesReplicant.on("change", (messages, oldVal) => {
-          if (oldVal && messages.length === oldVal.length) {
-            return;
-          }
           const messagesListElem = document.getElementById(
             "donationMessagesList",
           );
