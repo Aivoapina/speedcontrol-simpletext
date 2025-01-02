@@ -4,42 +4,49 @@ $(() => {
 
   const runDataArray = nodecg.Replicant("runDataArray", speedcontrolBundle);
 
+  let runs = [];
+
   runDataArray.on("change", (newVal) => {
     if (newVal) {
-      const now = new Date();
-
-      newVal.forEach((run, index) => {
-        if (!newVal[index + 1]) return;
-
-        const upnext = newVal[index + 1];
-        const later = newVal[index + 2];
-        const later2 = newVal[index + 3];
-
-        const startTime = calculateHalfway(
-          run.scheduled,
-          run.estimateS,
-          run.setupTimeS,
-        );
-        const nextTime = calculateHalfway(
-          upnext.scheduled,
-          upnext.estimateS,
-          upnext.setupTimeS,
-        );
-
-        if (startTime > now && index === 0) {
-          setTexts("upnext", run);
-          setTexts("later", upnext);
-          setTexts("later2", later);
-        }
-
-        if (startTime < now && now < nextTime) {
-          setTexts("upnext", upnext);
-          setTexts("later", later);
-          setTexts("later2", later2);
-        }
-      });
+      runs = newVal;
+      updater(runs);
     }
   });
+
+  const updater = () => {
+    const now = new Date();
+
+    runs.forEach((run, index) => {
+      if (!runs[index + 1]) return;
+
+      const upnext = runs[index + 1];
+      const later = runs[index + 2];
+      const later2 = runs[index + 3];
+
+      const startTime = calculateHalfway(
+        run.scheduled,
+        run.estimateS,
+        run.setupTimeS,
+      );
+      const nextTime = calculateHalfway(
+        upnext.scheduled,
+        upnext.estimateS,
+        upnext.setupTimeS,
+      );
+
+      if (startTime > now && index === 0) {
+        setTexts("upnext", run);
+        setTexts("later", upnext);
+        setTexts("later2", later);
+      }
+
+      if (startTime < now && now < nextTime) {
+        setTexts("upnext", upnext);
+        setTexts("later", later);
+        setTexts("later2", later2);
+      }
+    });
+  };
 
   const calculateHalfway = (startTime, estimate, setupTime) => {
     const start = new Date(startTime);
@@ -62,8 +69,23 @@ $(() => {
     const category = $(`#${name}Category`);
     const player = $(`#${name}Player`);
 
+    const names = getPlayerNames(run.teams);
+
+    if (!run.category) {
+      category.hide();
+    } else {
+      category.show();
+    }
+    if (!names) {
+      player.hide();
+    } else {
+      player.show();
+    }
+
     title.text(run.game);
     category.text(run.category);
-    player.text(getPlayerNames(run.teams));
+    player.text(names);
   };
+
+  setInterval(updater, 10000);
 });
