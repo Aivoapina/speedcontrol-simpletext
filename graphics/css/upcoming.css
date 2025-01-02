@@ -1,10 +1,10 @@
 .container {
   position: absolute;
 
-  width: 1280px;
+  width: 1120px;
   height: 100%;
   top: 0px;
-  left: 320px;
+  left: 400px;
 }
 
 h1 {
@@ -13,6 +13,7 @@ h1 {
   font-family: "Fugaz One";
   text-transform: uppercase;
   text-align: center;
+  margin-top: 70px;
 }
 
 h2 {
@@ -30,6 +31,7 @@ h2 {
   font-weight: bold;
   text-align: center;
   margin-bottom: 4px;
+  text-transform: none;
 }
 
 .game-container {
