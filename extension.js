@@ -37,6 +37,15 @@ module.exports = async function (nodecg) {
       !donateMessages.value.find(d => d.id === donate.id)
     ));
 
+    data.data.forEach(donate => {
+      donateMessages.value.forEach(d => {
+        if (d.id === donate.id && (d.message !== donate.message || d.name !== donate.name)) {
+          d.message = donate.message;
+          d.name = donate.name;
+        }
+      });
+    });
+
     const formatedDonates = newDonates.map(donate => ({
       id: donate.id,
       name: donate.name,
