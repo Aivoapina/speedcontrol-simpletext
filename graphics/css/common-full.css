@@ -73,7 +73,7 @@ body {
 
 .blue-bg {
   padding: 5px 10px;
-  background-color: #2c7cb2;
+  background-color: #23926c;
   border-radius: 8px;
   font-size: 24px;
   font-weight: 500;
@@ -100,7 +100,7 @@ body {
 }
 
 .playerContainer {
-  background-color: #2c7cb2;
+  background-color: #23926c;
   border-radius: 8px;
   font-weight: 700;
   box-shadow: 2px 2px rgba(0, 0, 0, 0.5);
@@ -116,7 +116,7 @@ body {
 
 .tags div {
   padding: 5px 10px;
-  background-color: #2c7cb2;
+  background-color: #23926c;
   border-radius: 8px;
   font-weight: 500;
   font-family: "Roboto Condensed";

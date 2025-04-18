@@ -38,6 +38,7 @@ $(() => {
     "textCarousel",
     speedcontrolBundle,
   );
+  const backgrounds = nodecg.Replicant("backgrounds", speedcontrolBundle);
 
   runDataActiveRunSurrounding.on("change", (newVal) => {
     if (newVal) updateNextGame(runDataActiveRunSurrounding);
@@ -45,6 +46,17 @@ $(() => {
 
   runDataActiveRun.on("change", (newVal) => {
     if (newVal) updateSceneFields(newVal);
+  });
+
+  backgrounds.on("change", (newVal) => {
+    if (newVal) {
+      Object.keys(newVal).forEach((key) => {
+        const imgElem = document.getElementById(key);
+        if (imgElem) {
+          console.log(key, newVal[key]);
+        }
+      });
+    }
   });
 
   commentators.on("change", (newVal) => {

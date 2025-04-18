@@ -16,6 +16,15 @@
     "bundleDependencies": {
       "nodecg-speedcontrol": "^2.0.0"
     },
+    "assetCategories": [
+      {
+        "name": "backgrounds",
+        "title": "Backgrounds for overlays",
+        "allowedTypes": [
+          "png"
+        ]
+      }
+    ],
     "dashboardPanels": [
       {
         "name": "Donation",
@@ -34,6 +43,12 @@
         "title": "Text Carousel",
         "width": 3,
         "file": "textcarousel.html"
+      },
+      {
+        "name": "Backgrounds",
+        "title": "Backgrounds",
+        "width": 3,
+        "file": "backgrounds.html"
       }
     ],
     "graphics": [

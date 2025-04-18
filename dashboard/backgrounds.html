@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      .monospace {
+        font-family: monospace;
+      }
+      #textCarouselText {
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      
+      
+    </div>
+    <div>
+      <button id="set-bgs">Aseta</button>
+    </div>
+    <script>
+      const overlays = ['4-3-bg', '16-9-bg', '16-9-race-bg', '4-3-race-bg', 'bottombar-bg'];
+      const speedcontrolBundle = "nodecg-speedcontrol";
+      const assetReplicant = nodecg.Replicant('assets:backgrounds');
+
+      const backgroundsReplicant = nodecg.Replicant(
+        "backgrounds",
+        speedcontrolBundle,
+      );
+
+      const createSelects = () => {
+        const container = document.getElementById("container");
+        overlays.forEach((overlay) => {
+          const div = document.createElement("div");
+          const option = document.createElement("select");
+          const span = document.createElement("span");
+          span.style.marginRight = "10px";
+          span.textContent = overlay;
+          option.value = overlay;
+          option.id = overlay;
+          div.appendChild(span);
+          div.appendChild(option);
+          container.appendChild(div);
+          createOptions(overlay, assetReplicant.value);
+        });
+      };
+
+      const createOptions = (id, bgList) => {
+        const select = document.getElementById(id);
+        bgList.forEach((bg) => {
+          const option = document.createElement("option");
+          option.value = bg.url;
+          option.textContent = bg.name;
+          select.appendChild(option);
+        });
+      };
+
+      const setBgsButton = document.getElementById("set-bgs");
+      setBgsButton.addEventListener("click", () => {
+        const newBgs = {};
+        overlays.forEach((overlay) => {
+          const select = document.getElementById(overlay);
+          newBgs[overlay] = select.value;
+        });
+        backgroundsReplicant.value = newBgs;
+      });
+
+      NodeCG.waitForReplicants(backgroundsReplicant).then(() => {        
+        createSelects();
+      });
+    </script>
+  </body>
+</html>
