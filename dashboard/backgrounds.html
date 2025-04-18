@@ -13,17 +13,20 @@
   </head>
 
   <body>
-    <div id="container">
-      
-      
-    </div>
+    <div id="container"></div>
     <div>
       <button id="set-bgs">Aseta</button>
     </div>
     <script>
-      const overlays = ['4-3-bg', '16-9-bg', '16-9-race-bg', '4-3-race-bg', 'bottombar-bg'];
+      const overlays = [
+        "4-3-bg",
+        "16-9-bg",
+        "16-9-race-bg",
+        "4-3-race-bg",
+        "bottombar-bg",
+      ];
       const speedcontrolBundle = "nodecg-speedcontrol";
-      const assetReplicant = nodecg.Replicant('assets:backgrounds');
+      const assetReplicant = nodecg.Replicant("assets:backgrounds");
 
       const backgroundsReplicant = nodecg.Replicant(
         "backgrounds",
@@ -67,7 +70,7 @@
         backgroundsReplicant.value = newBgs;
       });
 
-      NodeCG.waitForReplicants(backgroundsReplicant).then(() => {        
+      NodeCG.waitForReplicants(backgroundsReplicant).then(() => {
         createSelects();
       });
     </script>
