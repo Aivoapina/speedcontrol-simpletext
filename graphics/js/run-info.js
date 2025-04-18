@@ -53,7 +53,7 @@ $(() => {
       Object.keys(newVal).forEach((key) => {
         const imgElem = document.getElementById(key);
         if (imgElem) {
-          console.log(key, newVal[key]);
+          imgElem.src = newVal[key];
         }
       });
     }
