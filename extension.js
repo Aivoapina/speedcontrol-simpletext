@@ -29,28 +29,34 @@ module.exports = async function (nodecg) {
 
   setInterval(async () => {
     if (!donateMessagesUrl) return;
-
-    const data = await fetchJson(donateMessagesUrl);
+    const res = await fetch(donateMessagesUrl);
+    const data = await res.json();
     if (!data) return;
 
-    const newDonates = data.data.filter(donate => (
+    const newDonates = data.filter(donate => (
       !donateMessages.value.find(d => d.id === donate.id)
     ));
 
-    data.data.forEach(donate => {
+    data.forEach(donate => {
       donateMessages.value.forEach(d => {
-        if (d.id === donate.id && (d.message !== donate.message || d.name !== donate.name)) {
-          d.message = donate.message;
-          d.name = donate.name;
+        if (d.id === donate.id && (d.message !== donate.msg || d.name !== donate.donator)) {
+          d.message = donate.msg;
+          d.name = donate.donator;
+          d.incValue = donate.inc_value;
+          d.game = donate.game;
+          d.title = donate.title;
         }
       });
     });
 
     const formatedDonates = newDonates.map(donate => ({
       id: donate.id,
-      name: donate.name,
+      name: donate.donator,
       amount: donate.amount,
-      message: donate.message,
+      message: donate.msg,
+      incValue: donate.inc_value,
+      game: donate.game,
+      title: donate.title,
       read: false
     }));
 

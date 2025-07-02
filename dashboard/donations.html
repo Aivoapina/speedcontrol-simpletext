@@ -99,6 +99,7 @@
           messages.forEach((message) => {
             const containerElem = document.createElement("div");
             const messageElem = document.createElement("span");
+            const incElem = document.createElement("div");
             const readElem = document.createElement("input");
             readElem.type = "checkbox";
             readElem.checked = message.read;
@@ -109,10 +110,14 @@
                 }
               });
             };
-            messageElem.innerHTML = `${message.amount}€ ${message.name}: ${message.message}`;
+            const { amount, name, message: msg, incValue, game, title } = message;
+            incElem.innerHTML = `${game} - ${title}${incValue ? ` (${incValue})` : ""}`;
+            messageElem.innerHTML = `${amount}€ ${name}: ${msg}`;
             containerElem.appendChild(readElem);
             containerElem.appendChild(messageElem);
+            containerElem.appendChild(incElem);
             messagesListElem.appendChild(containerElem);
+
           });
         });
       });
