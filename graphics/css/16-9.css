@@ -6,7 +6,7 @@
 
   width: 460px;
   height: 579px;
-  top: 420px;
+  top: 300px;
   left: 0px;
 }
 
@@ -14,7 +14,7 @@
   padding: 1px;
   font-size: 32px;
   width: 419px;
-  margin: 20px;
+  margin: 20px 20px 10px 20px;
 }
 
 #gameContainer {
@@ -50,7 +50,7 @@
 #sponsor {
   display: block;
   max-width: 80%;
-  margin-top: 200px;
+  margin-top: 230px;
 }
 
 .twitchLogo::before {
