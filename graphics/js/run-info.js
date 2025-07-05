@@ -16,6 +16,7 @@ $(() => {
   const twitch = $("#twitch"); // twitch.html
   const commentatorContainer = $("#commentatorContainer");
   const donationInfoElem = document.getElementById("donationInfo");
+  const hostContainer = $(".hostContainer");
 
   let playerCycle = 0;
   let textCycle = 0;
@@ -60,14 +61,19 @@ $(() => {
   });
 
   commentators.on("change", (newVal) => {
-    if (newVal) {
+    if (newVal && (newVal.left || newVal.right)) {
       const leftDiv = newVal.left
         ? `<div class="blue-bg">${newVal.left}</div>`
         : "";
       const rightDiv = newVal.right
         ? `<div class="blue-bg">${newVal.right}</div>`
         : "";
+      hostContainer.css("flex-direction", "");
       commentatorContainer.empty().append(leftDiv + rightDiv);
+    } else {
+      commentatorContainer.empty();
+
+      hostContainer.css("flex-direction", "column-reverse");
     }
   });
 

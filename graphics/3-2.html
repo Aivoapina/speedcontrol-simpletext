@@ -3,37 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>16:9</title>
+    <title>3:2</title>
     <link rel="stylesheet" href="css/common-full.css" />
-    <link rel="stylesheet" href="css/16-9.css" />
+    <link rel="stylesheet" href="css/3-2.css" />
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="js/run-info.js"></script>
     <script src="js/timer.js"></script>
   </head>
 
   <body>
-    <img id="16-9-bg" class="bgImg" src="img/bg_16-9.png" />
+    <img id="3-2-bg" class="bgImg" src="img/bg_4-3.png" />
 
     <div class="leftContainer">
       <div class="hostContainer">
         <div class="playerContainer">
           <div id="player"></div>
         </div>
-
         <div id="commentatorContainer"></div>
       </div>
+
+      <div id="gameContainer">
+        <div id="gameTitle"></div>
+        <div class="tags">
+          <div id="gameCategory" class="blue-bg"></div>
+          <div id="gameSystem" class="blue-bg"></div>
+          <div id="gameEstimate" class="blue-bg"></div>
+        </div>
+      </div>
+
+      <div id="timer"></div>
       <img id="sponsor" src="img/sponsor_gamepit.png" />
     </div>
-
-    <div id="gameContainer">
-      <div id="gameTitle"></div>
-      <div class="tags">
-        <div id="gameCategory" class="blue-bg"></div>
-        <div id="gameSystem" class="blue-bg"></div>
-        <div id="gameEstimate" class="blue-bg"></div>
-      </div>
-    </div>
-
-    <div id="timer"></div>
   </body>
 </html>

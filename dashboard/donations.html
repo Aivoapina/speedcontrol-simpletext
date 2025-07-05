@@ -110,14 +110,20 @@
                 }
               });
             };
-            const { amount, name, message: msg, incValue, game, title } = message;
+            const {
+              amount,
+              name,
+              message: msg,
+              incValue,
+              game,
+              title,
+            } = message;
             incElem.innerHTML = `${game} - ${title}${incValue ? ` (${incValue})` : ""}`;
             messageElem.innerHTML = `${amount}€ ${name}: ${msg}`;
             containerElem.appendChild(readElem);
             containerElem.appendChild(messageElem);
             containerElem.appendChild(incElem);
             messagesListElem.appendChild(containerElem);
-
           });
         });
       });

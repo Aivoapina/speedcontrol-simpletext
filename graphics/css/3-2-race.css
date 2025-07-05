@@ -1,19 +1,19 @@
 .rightContainer {
   position: absolute;
-  top: 720px;
+  top: 660px;
   right: 0px;
 
-  height: 280px;
-  width: 700px;
+  height: 315px;
+  width: 680px;
 }
 
 .leftContainer {
   position: absolute;
-  top: 720px;
+  top: 680px;
   left: 0px;
 
   height: 280px;
-  width: 700px;
+  width: 680px;
 }
 
 .leftContainer div {
@@ -43,7 +43,7 @@
 
 /* layout spesific stylings */
 #gameTitle {
-  margin-top: 20px;
+  margin-top: 36px;
   font-size: 32px;
 }
 

@@ -4,7 +4,7 @@
   position: absolute;
   justify-content: space-between;
 
-  width: 580px;
+  width: 420px;
   height: 650px;
   top: 265px;
   left: 0px;
@@ -20,7 +20,7 @@
 
 .playerContainer {
   padding: 0px 10px 0px 10px;
-  width: 477px;
+  width: 380px;
   font-size: 32px;
   margin: 20px 20px 10px 20px;
 }
