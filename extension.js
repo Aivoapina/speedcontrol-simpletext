@@ -13,11 +13,14 @@ module.exports = async function (nodecg) {
   let donateUrl = donateUrlReplicant.value;
   let donateMessagesUrl = donateMessagesUrlReplicant.value;
 
+  let msgErrorCount = 0;
+  let donateMessageInterval;
+
   if (!donateMessages.value) {
     donateMessages.value = [];
   }
 
-  setInterval(async () => {
+  const donateAmountFetcher = async () => {
     if (!donateUrl) return;
 
     const data = await fetchJson(donateUrl);
@@ -25,43 +28,57 @@ module.exports = async function (nodecg) {
     const total = data.data.total_amount;
     
     donateAmountReplicant.value = total;
-  }, 10000);
+  }
 
-  setInterval(async () => {
+  const donateMessageFetcher = async () => {
     if (!donateMessagesUrl) return;
-    const res = await fetch(donateMessagesUrl);
-    const data = await res.json();
-    if (!data) return;
+    try {
+      const res = await fetch(donateMessagesUrl);
+      const data = await res.json();
 
-    const newDonates = data.filter(donate => (
-      !donateMessages.value.find(d => d.id === donate.id)
-    ));
+      if (!data) return;
 
-    data.forEach(donate => {
-      donateMessages.value.forEach(d => {
-        if (d.id === donate.id && (d.message !== donate.msg || d.name !== donate.donator)) {
-          d.message = donate.msg;
-          d.name = donate.donator;
-          d.incValue = donate.inc_value;
-          d.game = donate.game;
-          d.title = donate.title;
-        }
+      const newDonates = data.filter(donate => (
+        !donateMessages.value.find(d => d.id === donate.id)
+      ));
+
+      data.forEach(donate => {
+        donateMessages.value.forEach(d => {
+          if (d.id === donate.id && (d.message !== donate.msg || d.name !== donate.donator)) {
+            d.message = donate.msg;
+            d.name = donate.donator;
+            d.incValue = donate.inc_value;
+            d.game = donate.game;
+            d.title = donate.title;
+          }
+        });
       });
-    });
 
-    const formatedDonates = newDonates.map(donate => ({
-      id: donate.id,
-      name: donate.donator,
-      amount: donate.amount,
-      message: donate.msg,
-      incValue: donate.inc_value,
-      game: donate.game,
-      title: donate.title,
-      read: false
-    }));
+      const formatedDonates = newDonates.map(donate => ({
+        id: donate.id,
+        name: donate.donator,
+        amount: donate.amount,
+        message: donate.msg,
+        incValue: donate.inc_value,
+        game: donate.game,
+        title: donate.title,
+        read: false
+      }));
 
-    donateMessages.value.push(...formatedDonates);
-  }, 10000);
+      donateMessages.value.push(...formatedDonates);
+      msgErrorCount = 0;
+    } catch (error) {
+      msgErrorCount += 1;
+      if (msgErrorCount >= 5) {
+        console.error('Too many errors fetching donate messages, stopping fetcher.');
+        clearInterval(donateMessageInterval);
+        donateMessageInterval = null;
+      }
+    }
+  };
+
+  setInterval(donateAmountFetcher, 10000);
+  donateMessageInterval = setInterval(donateMessageFetcher, 10000);
 
   donateUrlReplicant.on("change", (val) => {
     donateUrl = val;
@@ -69,6 +86,9 @@ module.exports = async function (nodecg) {
 
   donateMessagesUrlReplicant.on("change", (val) => {
     donateMessagesUrl = val;
+    if (!donateMessageInterval) {
+      donateMessageInterval = setInterval(donateMessageFetcher, 10000);
+    }
   });
 };
 

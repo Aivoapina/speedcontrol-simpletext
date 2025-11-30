@@ -77,7 +77,7 @@
         document.getElementById("donationMessages").style.display = "none";
       }
 
-      NodeCG.waitForReplicants(urlReplicant, donateReplicant).then(() => {
+      NodeCG.waitForReplicants(urlReplicant, donateReplicant, donateMessagesUrlReplicant).then(() => {
         urlReplicant.on("change", (url) => {
           urlInput.value = url;
         });
@@ -88,6 +88,10 @@
           } else {
             donationInfoElem.innerHTML = "";
           }
+        });
+
+        donateMessagesUrlReplicant.on("change", (messagesUrl) => {
+          messagesUrlInput.value = messagesUrl;
         });
 
         donateMessagesReplicant.on("change", (messages, oldVal) => {
