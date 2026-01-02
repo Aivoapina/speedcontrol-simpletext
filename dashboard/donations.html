@@ -44,6 +44,7 @@
     </div>
 
     <div id="donationMessages">
+      <button id="clearDonationMessages">Tyhjennä lahjoituslista</button>
       <h3>Lahjoitukset</h3>
       <div id="donationMessagesList"></div>
     </div>
@@ -58,6 +59,9 @@
         "toggleDonationStatus",
       );
       const donationInfoElem = document.getElementById("donationInfo");
+      const clearDonationMessagesElem = document.getElementById(
+        "clearDonationMessages",
+      );
 
       const urlReplicant = nodecg.Replicant("donateUrl", speedcontrolBundle);
       const donateReplicant = nodecg.Replicant(
@@ -142,6 +146,11 @@
           donateReplicant.value = true;
         } else {
           donateReplicant.value = !donateReplicant.value;
+        }
+      };
+      clearDonationMessagesElem.onclick = () => {
+        if (window.confirm("OOH REALLY CLEAR ALL DONATION MESSAGES?")) {
+          donateMessagesReplicant.value = [];
         }
       };
     </script>
