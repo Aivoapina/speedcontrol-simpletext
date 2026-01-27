@@ -53,66 +53,6 @@
     ],
     "graphics": [
       {
-        "file": "game-title.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "game-category.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "game-system.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "game-estimate.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "player.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "twitch.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "timer.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "donations.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "time.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "game-catplat-carousel.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "text-carousel.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "game-info.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
         "file": "player-dashboard.html",
         "width": 1280,
         "height": 720
