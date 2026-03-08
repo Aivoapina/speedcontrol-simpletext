@@ -39,7 +39,7 @@ export function createGrid({
     mask.appendChild(fullRect);
 
     if (layout.areas) {
-        ['camera', 'gameplay', 'gameplayLeft', 'gameplayRight'].forEach(areaName => {
+        ['camera', 'gameplay', 'gameplayLeft', 'gameplayRight', 'secondScreen'].forEach(areaName => {
             const area = layout.areas[areaName];
             if (!area) return;
 

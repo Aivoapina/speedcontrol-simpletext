@@ -129,6 +129,18 @@ const LAYOUT_DEFS = {
         bottomHeight: bottomBarHeight,
         colors: LAYOUT_COLORS
     },
+
+    "nds": {
+        archetype: "nds",
+        width: layoutWidth,
+        height: layoutHeight,
+        gameplayWidth: 1344,
+        gameplayHeight: 1008,
+        secondScreenHeight: 432,
+        cameraHeight: 360,
+        bottomHeight: bottomBarHeight,
+        colors: LAYOUT_COLORS
+    },
 }
 
 // ================
@@ -220,6 +232,55 @@ function resolveTallscreen(def) {
             camera: cameraArea,
             sponsor: sponsorArea,
             gameplay: gameplayArea,
+            bottomBar: bottomBarArea
+        }
+    };
+}
+
+function resolveNDS(def) {
+    const leftColumnWidth = def.width - def.gameplayWidth;
+    const cameraArea = {
+        x: 0,
+        y: 0,
+        width: leftColumnWidth,
+        height: def.cameraHeight
+    };
+
+    const sponsorArea = {
+        x: 0,
+        y: def.cameraHeight,
+        width: leftColumnWidth,
+        height: def.height - def.bottomHeight - def.cameraHeight - def.secondScreenHeight
+    };
+
+    const secondScreenArea = {
+        x: 0,
+        y: sponsorArea.height + def.cameraHeight,
+        width: leftColumnWidth,
+        height: def.secondScreenHeight
+    }
+
+    const gameplayArea = {
+        x: leftColumnWidth,
+        y: 0,
+        width: def.gameplayWidth,
+        height: def.height - def.bottomHeight
+    };
+
+    const bottomBarArea = {
+        x: 0,
+        y: def.height - def.bottomHeight,
+        width: def.width,
+        height: def.bottomHeight
+    };
+
+    return {
+        ...def,
+        areas: {
+            camera: cameraArea,
+            sponsor: sponsorArea,
+            gameplay: gameplayArea,
+            secondScreen: secondScreenArea,
             bottomBar: bottomBarArea
         }
     };
@@ -355,6 +416,9 @@ export function resolveLayout(layoutId) {
 
         case "tallscreen":
             return resolveTallscreen(def);
+
+        case "nds":
+            return resolveNDS(def);
 
         case "race":
             return resolveRace(def);
