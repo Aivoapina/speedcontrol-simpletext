@@ -1,16 +1,16 @@
 :root {
-    --animSpeed: 600ms;
+  --animSpeed: 600ms;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    width: 1920px;
-    height: 1080px;
-    color: white;
-    overflow: hidden;
-    font-family: 'Pt Sans Narrow';
-    text-align: center;
+  margin: 0;
+  padding: 0;
+  width: 1920px;
+  height: 1080px;
+  color: white;
+  overflow: hidden;
+  font-family: "Pt Sans Narrow";
+  text-align: center;
 }
 
 #camera,
@@ -20,122 +20,121 @@ body {
 #gameplayRight,
 #runInfo,
 #secondScreen {
-    outline: 1px solid var(--border-color);
-    overflow: hidden;
+  outline: 1px solid var(--border-color);
+  overflow: hidden;
 }
 
 #camera {
-    box-sizing: border-box;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-evenly;
-    padding: 10px;
-    font-size: 22px;
-    gap: 5px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  padding: 10px;
+  font-size: 22px;
+  gap: 5px;
 }
 
 #camera div {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .gameContainer,
 .timerContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
 }
 
 .imgContainer img {
-    width: 80%;
-    max-height: 60%;
-    object-fit: contain;
-    display: block;
+  width: 80%;
+  max-height: 60%;
+  object-fit: contain;
+  display: block;
 
-    opacity: 1;
-    transition: opacity 0.5s;
+  opacity: 1;
+  transition: opacity 0.5s;
 }
 
 #gameTitle {
-    font-family: 'Fugaz One';
-    text-transform: uppercase;
-    text-shadow: 3px 3px black;
-    display: inline-block;
-    line-height: 1.2;
+  font-family: "Fugaz One";
+  text-transform: uppercase;
+  text-shadow: 3px 3px black;
+  display: inline-block;
+  line-height: 1.2;
 }
 
 #timer {
-    text-shadow: 3px 3px black;
-    font-weight: bold;
+  text-shadow: 3px 3px black;
+  font-weight: bold;
 }
 
 .tag {
-    background-color: var(--border-color);
-    border-radius: 10px;
-    padding: 5px 8px;
-    box-shadow: 2px 2px black;
-    font-family: 'Roboto Condensed';
-    font-weight: 600;
-    text-transform: uppercase;
-    text-shadow: 2px 2px rgba(0, 0, 0, 0.7);
-    white-space: nowrap;
+  background-color: var(--border-color);
+  border-radius: 10px;
+  padding: 5px 8px;
+  box-shadow: 2px 2px black;
+  font-family: "Roboto Condensed";
+  font-weight: 600;
+  text-transform: uppercase;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
 }
 
 .gameTagContainer {
-    display: flex;
-    gap: 5px;
-    margin-top: 5px;
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
 }
 
 .producerContainer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    margin: 10px;
-    font-size: 20px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 10px;
+  font-size: 20px;
 
-    transform: translateX(-250px);
-    transition: transform var(--animSpeed) ease;
+  transform: translateX(-250px);
+  transition: transform var(--animSpeed) ease;
 }
 
 .producerContainer.active {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
 #player,
 #player1,
 #player2 {
-    opacity: 1;
-    transition: opacity 0.5s;
+  opacity: 1;
+  transition: opacity 0.5s;
 }
 
 .hide {
-    opacity: 0 !important;
+  opacity: 0 !important;
 }
 
 .no_display {
-    display: none;
+  display: none;
 }
 
 .timer_finished {
-    color: #6ec3e8;
+  color: #6ec3e8;
 }
 
 .timer_stopped {
-    color: #90a9b3;
+  color: #90a9b3;
 }
 
 .place_1 {
-    color: gold;
+  color: gold;
 }
 
 .place_2 {
-    color: #6ec3e8;
+  color: #6ec3e8;
 }
 
 #textCarousel {
-    opacity: 1;
-    transition: opacity 0.5s;
+  opacity: 1;
+  transition: opacity 0.5s;
 }

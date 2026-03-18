@@ -1,49 +1,49 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/common.css" />
+    <style>
+      select {
+        width: 100%;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" href="css/common.css">
-  <style>
-    select {
-      width: 100%;
-    }
-  </style>
-</head>
-
-<body>
-  <div>
-    <h1>Väriteema</h1>
-    <div style="display: flex; gap: 10px;">
-      <label>
-        <input type="radio" name="option" value="FINNRUNS">
-        FINNRUNS
-      </label>
-      <label>
-        <input type="radio" name="option" value="QUEST">
-        FINNRUNS QUEST
-      </label>
+  <body>
+    <div>
+      <h1>Väriteema</h1>
+      <div style="display: flex; gap: 10px">
+        <label>
+          <input type="radio" name="option" value="FINNRUNS" />
+          FINNRUNS
+        </label>
+        <label>
+          <input type="radio" name="option" value="QUEST" />
+          FINNRUNS QUEST
+        </label>
+      </div>
     </div>
-  </div>
 
-  <script>
-    const selectionRep = nodecg.Replicant('eventColors', { defaultValue: 'FINNRUNS' });
-
-    const radios = document.querySelectorAll('input[name="option"]');
-
-    selectionRep.on('change', newValue => {
-      radios.forEach(radio => {
-        radio.checked = (radio.value === newValue);
+    <script>
+      const selectionRep = nodecg.Replicant("eventColors", {
+        defaultValue: "FINNRUNS",
       });
-    });
-    radios.forEach(radio => {
-      radio.addEventListener('change', () => {
-        if (radio.checked) {
-          selectionRep.value = radio.value;
-        }
-      });
-    });
-  </script>
-</body>
 
+      const radios = document.querySelectorAll('input[name="option"]');
+
+      selectionRep.on("change", (newValue) => {
+        radios.forEach((radio) => {
+          radio.checked = radio.value === newValue;
+        });
+      });
+      radios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+          if (radio.checked) {
+            selectionRep.value = radio.value;
+          }
+        });
+      });
+    </script>
+  </body>
 </html>

@@ -1,189 +1,192 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fugaz+One&family=PT+Sans+Narrow:wght@400;700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/common.css" />
+    <style>
+      #messagesUrl,
+      #url {
+        width: 350px;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fugaz+One&family=PT+Sans+Narrow:wght@400;700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/common.css">
-  <style>
-    #messagesUrl,
-    #url {
-      width: 350px;
-    }
+      #donationInfo {
+        height: 30px;
+      }
 
-    #donationInfo {
-      height: 30px;
-    }
+      #donationMessages {
+        font-size: 22px;
+      }
 
-    #donationMessages {
-      font-size: 22px;
-    }
+      #donationMessages input {
+        display: inline-block;
+      }
 
-    #donationMessages input {
-      display: inline-block;
-    }
+      #donationMessagesList > div {
+        margin: 5px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
 
-    #donationMessagesList>div {
-      margin: 5px;
-      padding: 10px;
-      background-color: rgba(0, 0, 0, 0.2);
-    }
+      .donation-amount,
+      .donor-name {
+        font-weight: bold;
+        line-height: 1.8em;
+      }
 
-    .donation-amount,
-    .donor-name {
-      font-weight: bold;
-      line-height: 1.8em;
-    }
+      .message-read {
+        opacity: 0.4;
+      }
 
-    .message-read {
-      opacity: 0.4;
-    }
+      .incentive {
+        font-size: 18px;
+        font-family: "Roboto";
+      }
+    </style>
+    <title>Lahjoitukset</title>
+  </head>
 
-    .incentive {
-      font-size: 18px;
-      font-family: 'Roboto';
-    }
-  </style>
-  <title>Lahjoitukset</title>
-</head>
-
-<body>
-  <div>
+  <body>
     <div>
-      <label for="url">Lahjoitus URL</label>
-      <input id="url" type="text" />
+      <div>
+        <label for="url">Lahjoitus URL</label>
+        <input id="url" type="text" />
+      </div>
+      <div>
+        <label for="messagesUrl">Lahjoitus viesti URL</label>
+        <input id="messagesUrl" type="text" />
+      </div>
+      <button id="setUrl">Aseta</button>
     </div>
+
+    <br />
+
     <div>
-      <label for="messagesUrl">Lahjoitus viesti URL</label>
-      <input id="messagesUrl" type="text" />
+      <button id="toggleDonationStatus">Lahjoituksia luettavana!</button>
+      <h3 id="donationInfo"></h3>
     </div>
-    <button id="setUrl">Aseta</button>
-  </div>
 
-  <br />
+    <div id="donationMessages">
+      <button id="clearDonationMessages">Tyhjennä lahjoituslista</button>
+      <h3>Lahjoitukset</h3>
+      <div id="donationMessagesList"></div>
+    </div>
+    <script>
+      const speedcontrolBundle = "nodecg-speedcontrol";
 
-  <div>
-    <button id="toggleDonationStatus">Lahjoituksia luettavana!</button>
-    <h3 id="donationInfo"></h3>
-  </div>
+      const urlInput = document.querySelector("#url");
+      const setUrlButton = document.querySelector("#setUrl");
+      const messagesUrlInput = document.querySelector("#messagesUrl");
 
-  <div id="donationMessages">
-    <button id="clearDonationMessages">Tyhjennä lahjoituslista</button>
-    <h3>Lahjoitukset</h3>
-    <div id="donationMessagesList"></div>
-  </div>
-  <script>
-    const speedcontrolBundle = "nodecg-speedcontrol";
+      const toggleDonationStatusElem = document.getElementById(
+        "toggleDonationStatus",
+      );
+      const donationInfoElem = document.getElementById("donationInfo");
+      const clearDonationMessagesElem = document.getElementById(
+        "clearDonationMessages",
+      );
 
-    const urlInput = document.querySelector("#url");
-    const setUrlButton = document.querySelector("#setUrl");
-    const messagesUrlInput = document.querySelector("#messagesUrl");
+      const urlReplicant = nodecg.Replicant("donateUrl", speedcontrolBundle);
+      const donateReplicant = nodecg.Replicant(
+        "donateStatus",
+        speedcontrolBundle,
+      );
+      const donateMessagesUrlReplicant = nodecg.Replicant(
+        "donateMessagesUrl",
+        speedcontrolBundle,
+      );
+      const donateMessagesReplicant = nodecg.Replicant(
+        "donateMessages",
+        speedcontrolBundle,
+      );
 
-    const toggleDonationStatusElem = document.getElementById(
-      "toggleDonationStatus",
-    );
-    const donationInfoElem = document.getElementById("donationInfo");
-    const clearDonationMessagesElem = document.getElementById(
-      "clearDonationMessages",
-    );
+      if (!window.location.search) {
+        document.getElementById("donationMessages").style.display = "none";
+      }
 
-    const urlReplicant = nodecg.Replicant("donateUrl", speedcontrolBundle);
-    const donateReplicant = nodecg.Replicant(
-      "donateStatus",
-      speedcontrolBundle,
-    );
-    const donateMessagesUrlReplicant = nodecg.Replicant(
-      "donateMessagesUrl",
-      speedcontrolBundle,
-    );
-    const donateMessagesReplicant = nodecg.Replicant(
-      "donateMessages",
-      speedcontrolBundle,
-    );
+      NodeCG.waitForReplicants(
+        urlReplicant,
+        donateReplicant,
+        donateMessagesUrlReplicant,
+      ).then(() => {
+        urlReplicant.on("change", (url) => {
+          urlInput.value = url;
+        });
 
-    if (!window.location.search) {
-      document.getElementById("donationMessages").style.display = "none";
-    }
-
-    NodeCG.waitForReplicants(urlReplicant, donateReplicant, donateMessagesUrlReplicant).then(() => {
-      urlReplicant.on("change", (url) => {
-        urlInput.value = url;
-      });
-
-      donateReplicant.on("change", (status) => {
-        if (status) {
-          donationInfoElem.innerHTML = "Lahjoituksia luettavana!";
-        } else {
-          donationInfoElem.innerHTML = "";
-        }
-      });
-
-      donateMessagesUrlReplicant.on("change", (messagesUrl) => {
-        messagesUrlInput.value = messagesUrl;
-      });
-
-      donateMessagesReplicant.on("change", (messages, oldVal) => {
-        const messagesListElem = document.getElementById(
-          "donationMessagesList",
-        );
-        messagesListElem.innerHTML = "";
-
-        messages.forEach((message) => {
-          const containerElem = document.createElement("div");
-          const messageElem = document.createElement("span");
-          const incElem = document.createElement("div");
-          const readElem = document.createElement("input");
-          readElem.type = "checkbox";
-          readElem.checked = message.read;
-          if (message.read) {
-            containerElem.classList.add("message-read");
+        donateReplicant.on("change", (status) => {
+          if (status) {
+            donationInfoElem.innerHTML = "Lahjoituksia luettavana!";
+          } else {
+            donationInfoElem.innerHTML = "";
           }
-          readElem.onchange = () => {
-            donateMessagesReplicant.value.map((m) => {
-              if (m.id === message.id) {
-                m.read = readElem.checked;
-              }
-            });
-          };
-          const {
-            amount,
-            name,
-            message: msg,
-            incValue,
-            game,
-            title,
-          } = message;
-          incElem.innerHTML = `<span class="incentive">${game} - ${title}${incValue ? ` (${incValue})` : ""}</span>`;
-          messageElem.innerHTML = `<span class="donation-amount">${amount}€</span> <span class="donor-name">${name}</span>:
+        });
+
+        donateMessagesUrlReplicant.on("change", (messagesUrl) => {
+          messagesUrlInput.value = messagesUrl;
+        });
+
+        donateMessagesReplicant.on("change", (messages, oldVal) => {
+          const messagesListElem = document.getElementById(
+            "donationMessagesList",
+          );
+          messagesListElem.innerHTML = "";
+
+          messages.forEach((message) => {
+            const containerElem = document.createElement("div");
+            const messageElem = document.createElement("span");
+            const incElem = document.createElement("div");
+            const readElem = document.createElement("input");
+            readElem.type = "checkbox";
+            readElem.checked = message.read;
+            if (message.read) {
+              containerElem.classList.add("message-read");
+            }
+            readElem.onchange = () => {
+              donateMessagesReplicant.value.map((m) => {
+                if (m.id === message.id) {
+                  m.read = readElem.checked;
+                }
+              });
+            };
+            const {
+              amount,
+              name,
+              message: msg,
+              incValue,
+              game,
+              title,
+            } = message;
+            incElem.innerHTML = `<span class="incentive">${game} - ${title}${incValue ? ` (${incValue})` : ""}</span>`;
+            messageElem.innerHTML = `<span class="donation-amount">${amount}€</span> <span class="donor-name">${name}</span>:
           <br>${msg}`;
-          containerElem.appendChild(readElem);
-          containerElem.appendChild(messageElem);
-          containerElem.appendChild(incElem);
-          messagesListElem.appendChild(containerElem);
+            containerElem.appendChild(readElem);
+            containerElem.appendChild(messageElem);
+            containerElem.appendChild(incElem);
+            messagesListElem.appendChild(containerElem);
+          });
         });
       });
-    });
 
-    setUrlButton.onclick = () => {
-      urlReplicant.value = urlInput.value;
-      donateMessagesUrlReplicant.value = messagesUrlInput.value;
-    };
+      setUrlButton.onclick = () => {
+        urlReplicant.value = urlInput.value;
+        donateMessagesUrlReplicant.value = messagesUrlInput.value;
+      };
 
-    toggleDonationStatusElem.onclick = () => {
-      if (donateReplicant.value === undefined) {
-        donateReplicant.value = true;
-      } else {
-        donateReplicant.value = !donateReplicant.value;
-      }
-    };
-    clearDonationMessagesElem.onclick = () => {
-      if (window.confirm("OOH REALLY CLEAR ALL DONATION MESSAGES?")) {
-        donateMessagesReplicant.value = [];
-      }
-    };
-  </script>
-</body>
-
+      toggleDonationStatusElem.onclick = () => {
+        if (donateReplicant.value === undefined) {
+          donateReplicant.value = true;
+        } else {
+          donateReplicant.value = !donateReplicant.value;
+        }
+      };
+      clearDonationMessagesElem.onclick = () => {
+        if (window.confirm("OOH REALLY CLEAR ALL DONATION MESSAGES?")) {
+          donateMessagesReplicant.value = [];
+        }
+      };
+    </script>
+  </body>
 </html>

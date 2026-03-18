@@ -1,72 +1,75 @@
 :root {
-    --border-width: 2px;
-    --border-style: solid;
+  --border-width: 2px;
+  --border-style: solid;
 }
 
 .bottomBar {
-    width: 1920px;
-    background-image: linear-gradient(to top, var(--bottom-gradient), var(--top-gradient));
-    border-top: 2px solid var(--border-color);
-    display: grid;
-    grid-template-columns: 2fr 1fr 10fr 1fr;
-    font-size: 30px;
-    text-shadow: 2px 2px black;
-    position: absolute;
-    bottom: 0;
+  width: 1920px;
+  background-image: linear-gradient(
+    to top,
+    var(--bottom-gradient),
+    var(--top-gradient)
+  );
+  border-top: 2px solid var(--border-color);
+  display: grid;
+  grid-template-columns: 2fr 1fr 10fr 1fr;
+  font-size: 30px;
+  text-shadow: 2px 2px black;
+  position: absolute;
+  bottom: 0;
 }
 
 .bottomBar div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
 }
 
 .eventContainer {
-    font-family: 'Fugaz One';
-    border-right: var(--border-width) var(--border-style) var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  font-family: "Fugaz One";
+  border-right: var(--border-width) var(--border-style) var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .eventContainer img {
-    object-fit: contain;
-    max-height: 85%;
-
+  object-fit: contain;
+  max-height: 85%;
 }
 
 .eventContainer span {
-    display: block;
-    line-height: 1;
-    transform: translateY(1px);
+  display: block;
+  line-height: 1;
+  transform: translateY(1px);
 }
 
 #eventSeason {
-    font-size: 18px;
-    color: rgb(230, 230, 230);
-    text-transform: uppercase;
+  font-size: 18px;
+  color: rgb(230, 230, 230);
+  text-transform: uppercase;
 }
 
 .textCarouselContainer {
-    border-left: var(--border-width) var(--border-style) var(--border-color);
-    border-right: var(--border-width) var(--border-style) var(--border-color);
+  border-left: var(--border-width) var(--border-style) var(--border-color);
+  border-right: var(--border-width) var(--border-style) var(--border-color);
 }
 
 #donations,
 .textCarouselContainer,
 .clockContainer {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 #donations,
 .clockContainer {
-    background-color: var(--bottom-gradient);
+  background-color: var(--bottom-gradient);
 }
 
 .clockContainer {
-    display: flex;
-    gap: 5px;
-    line-height: 1em;
+  display: flex;
+  gap: 5px;
+  line-height: 1em;
 }

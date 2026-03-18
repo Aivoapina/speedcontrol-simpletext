@@ -1,53 +1,53 @@
 .leftBar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
-    overflow: hidden;
-    padding: 10px;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 10px;
+  margin: 0;
 }
 
 .nametags-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 25px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 25px;
 }
 
 #commentator-container {
-    display: flex;
-    justify-content: space-around;
-    font-size: 22px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 22px;
 }
 
 .imgContainer {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 #runInfo {
-    display: flex;
+  display: flex;
 }
 
 #gameTitle {
-    font-size: 38px;
+  font-size: 38px;
 }
 
 .gameTagContainer {
-    font-size: 22px;
+  font-size: 22px;
 }
 
 .gameContainer {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .timerContainer {
-    border-left: 2px solid var(--border-color);
-    font-size: 80px;
-    width: 482px;
+  border-left: 2px solid var(--border-color);
+  font-size: 80px;
+  width: 482px;
 }

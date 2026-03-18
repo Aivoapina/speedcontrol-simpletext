@@ -1,43 +1,43 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/common.css" />
+    <style>
+      #textCarouselText {
+        width: 100%;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" href="css/common.css">
-  <style>
-    #textCarouselText {
-      width: 100%;
-    }
-  </style>
-</head>
+  <body>
+    <div>
+      <label for="textCarouselText"
+        >Alapalkin tekstit. Erottele rivit ;-merkillä</label
+      >
+      <textarea id="textCarouselText" type="text" rows="6"> </textarea>
+      <button id="setTextCarousel">Aseta</button>
+    </div>
+    <script>
+      const speedcontrolBundle = "nodecg-speedcontrol";
 
-<body>
-  <div>
-    <label for="textCarouselText">Alapalkin tekstit. Erottele rivit ;-merkillä</label>
-    <textarea id="textCarouselText" type="text" rows="6"> </textarea>
-    <button id="setTextCarousel">Aseta</button>
-  </div>
-  <script>
-    const speedcontrolBundle = "nodecg-speedcontrol";
+      const textCarouselTextElem = document.getElementById("textCarouselText");
+      const setTextCarouselButton = document.getElementById("setTextCarousel");
 
-    const textCarouselTextElem = document.getElementById("textCarouselText");
-    const setTextCarouselButton = document.getElementById("setTextCarousel");
+      const textCarouselReplicant = nodecg.Replicant(
+        "textCarousel",
+        speedcontrolBundle,
+      );
 
-    const textCarouselReplicant = nodecg.Replicant(
-      "textCarousel",
-      speedcontrolBundle,
-    );
+      NodeCG.waitForReplicants(textCarouselReplicant).then(() => {
+        textCarouselReplicant.on("change", (text) => {
+          textCarouselTextElem.value = text;
+        });
 
-    NodeCG.waitForReplicants(textCarouselReplicant).then(() => {
-      textCarouselReplicant.on("change", (text) => {
-        textCarouselTextElem.value = text;
+        setTextCarouselButton.addEventListener("click", () => {
+          textCarouselReplicant.value = textCarouselTextElem.value;
+        });
       });
-
-      setTextCarouselButton.addEventListener("click", () => {
-        textCarouselReplicant.value = textCarouselTextElem.value;
-      });
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>

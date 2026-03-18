@@ -1,137 +1,138 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/common.css" />
+    <style>
+      .container {
+        display: flex;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" href="css/common.css">
-  <style>
-    .container {
-      display: flex;
-    }
+      .container select {
+        flex-grow: 1;
+      }
+    </style>
+  </head>
 
-    .container select {
-      flex-grow: 1;
-    }
-  </style>
-</head>
-
-<body>
-  <div>
-    <div class="container">
-      <select id="commentator-left"></select>
-      <select id="commentator-right"></select>
-    </div>
-    <button id="setCommentators">Aseta Selostaja</button>
-    <br />
-    <div class="container">
-      <select id="producer"></select>
-    </div>
-    <button id="setProducer">Aseta tuottaja</button>
-    <br />
+  <body>
     <div>
-      <label for="newCommentator">Lisää kommentoija:</label>
-      <input id="newCommentator" type="text" />
+      <div class="container">
+        <select id="commentator-left"></select>
+        <select id="commentator-right"></select>
+      </div>
+      <button id="setCommentators">Aseta Selostaja</button>
+      <br />
+      <div class="container">
+        <select id="producer"></select>
+      </div>
+      <button id="setProducer">Aseta tuottaja</button>
+      <br />
+      <div>
+        <label for="newCommentator">Lisää kommentoija:</label>
+        <input id="newCommentator" type="text" />
+      </div>
+      <button id="addCommentator">Lisää</button>
     </div>
-    <button id="addCommentator">Lisää</button>
-  </div>
 
-  <script>
-    const speedcontrolBundle = "nodecg-speedcontrol";
+    <script>
+      const speedcontrolBundle = "nodecg-speedcontrol";
 
-    const runDataArray = nodecg.Replicant("runDataArray", speedcontrolBundle);
-    const allCommentators = nodecg.Replicant(
-      "allCommentators",
-      speedcontrolBundle,
-    );
-    const commentators = nodecg.Replicant("commentators", speedcontrolBundle);
-    const producerReplicant = nodecg.Replicant("producer", speedcontrolBundle);
+      const runDataArray = nodecg.Replicant("runDataArray", speedcontrolBundle);
+      const allCommentators = nodecg.Replicant(
+        "allCommentators",
+        speedcontrolBundle,
+      );
+      const commentators = nodecg.Replicant("commentators", speedcontrolBundle);
+      const producerReplicant = nodecg.Replicant(
+        "producer",
+        speedcontrolBundle,
+      );
 
-    const setCommentatorsButton = document.getElementById("setCommentators");
-    const addCommentatorButton = document.getElementById("addCommentator");
-    const setProducerButton = document.getElementById("setProducer");
+      const setCommentatorsButton = document.getElementById("setCommentators");
+      const addCommentatorButton = document.getElementById("addCommentator");
+      const setProducerButton = document.getElementById("setProducer");
 
-    NodeCG.waitForReplicants(
-      runDataArray,
-      allCommentators,
-      commentators,
-    ).then(() => {
-      runDataArray.on("change", (newVal) => {
-        const commentatorSet = new Set(allCommentators.value);
+      NodeCG.waitForReplicants(
+        runDataArray,
+        allCommentators,
+        commentators,
+      ).then(() => {
+        runDataArray.on("change", (newVal) => {
+          const commentatorSet = new Set(allCommentators.value);
 
-        newVal.forEach((run) => {
-          run.teams.forEach((team) => {
-            team.players.forEach((player) => {
-              commentatorSet.add(player.name);
+          newVal.forEach((run) => {
+            run.teams.forEach((team) => {
+              team.players.forEach((player) => {
+                commentatorSet.add(player.name);
+              });
             });
           });
+          allCommentators.value = Array.from(commentatorSet);
         });
-        allCommentators.value = Array.from(commentatorSet);
+
+        allCommentators.on("change", (newVal) => {
+          const left = document.getElementById("commentator-left");
+          const right = document.getElementById("commentator-right");
+          const producer = document.getElementById("producer");
+
+          left.innerHTML = "";
+          right.innerHTML = "";
+          producer.innerHTML = "";
+
+          const option = document.createElement("option");
+
+          left.appendChild(option);
+          right.appendChild(option.cloneNode(true));
+          producer.appendChild(option.cloneNode(true));
+
+          newVal.forEach((player) => {
+            const leftOption = document.createElement("option");
+            leftOption.value = player;
+            leftOption.text = player;
+
+            const rightOption = leftOption.cloneNode(true);
+            const producerOption = leftOption.cloneNode(true);
+
+            if (player === commentators.value.left) {
+              leftOption.selected = true;
+            } else if (player === commentators.value.right) {
+              rightOption.selected = true;
+            } else if (player === producerReplicant.value) {
+              producerOption.selected = true;
+            }
+            left.appendChild(leftOption);
+            right.appendChild(rightOption);
+            producer.appendChild(producerOption);
+          });
+        });
       });
 
-      allCommentators.on("change", (newVal) => {
+      setCommentatorsButton.onclick = () => {
         const left = document.getElementById("commentator-left");
         const right = document.getElementById("commentator-right");
-        const producer = document.getElementById("producer");
 
-        left.innerHTML = "";
-        right.innerHTML = "";
-        producer.innerHTML = "";
+        const leftValue = left.options[left.selectedIndex].value;
+        const rightValue = right.options[right.selectedIndex].value;
 
-        const option = document.createElement("option");
-
-        left.appendChild(option);
-        right.appendChild(option.cloneNode(true));
-        producer.appendChild(option.cloneNode(true));
-
-        newVal.forEach((player) => {
-          const leftOption = document.createElement("option");
-          leftOption.value = player;
-          leftOption.text = player;
-
-          const rightOption = leftOption.cloneNode(true);
-          const producerOption = leftOption.cloneNode(true);
-
-          if (player === commentators.value.left) {
-            leftOption.selected = true;
-          } else if (player === commentators.value.right) {
-            rightOption.selected = true;
-          } else if (player === producerReplicant.value) {
-            producerOption.selected = true;
-          }
-          left.appendChild(leftOption);
-          right.appendChild(rightOption);
-          producer.appendChild(producerOption);
-        });
-      });
-    });
-
-    setCommentatorsButton.onclick = () => {
-      const left = document.getElementById("commentator-left");
-      const right = document.getElementById("commentator-right");
-
-      const leftValue = left.options[left.selectedIndex].value;
-      const rightValue = right.options[right.selectedIndex].value;
-
-      commentators.value = {
-        left: leftValue,
-        right: rightValue,
+        commentators.value = {
+          left: leftValue,
+          right: rightValue,
+        };
       };
-    };
 
-    setProducerButton.onclick = () => {
-      const producer = document.getElementById("producer");
-      const producerValue = producer.options[producer.selectedIndex].value;
-      producerReplicant.value = producerValue;
-    }
+      setProducerButton.onclick = () => {
+        const producer = document.getElementById("producer");
+        const producerValue = producer.options[producer.selectedIndex].value;
+        producerReplicant.value = producerValue;
+      };
 
-    addCommentatorButton.onclick = () => {
-      const newCommentator = document.getElementById("newCommentator");
+      addCommentatorButton.onclick = () => {
+        const newCommentator = document.getElementById("newCommentator");
 
-      if (!allCommentators.value.includes(newCommentator.value)) {
-        allCommentators.value.push(newCommentator.value);
-      }
-    };
-  </script>
-</body>
-
+        if (!allCommentators.value.includes(newCommentator.value)) {
+          allCommentators.value.push(newCommentator.value);
+        }
+      };
+    </script>
+  </body>
 </html>

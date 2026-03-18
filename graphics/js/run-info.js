@@ -42,7 +42,7 @@ $(() => {
     speedcontrolBundle,
   );
 
-  const sponsorCarouselReplicant = nodecg.Replicant('assets:sponsor-imgs');
+  const sponsorCarouselReplicant = nodecg.Replicant("assets:sponsor-imgs");
 
   runDataActiveRunSurrounding.on("change", (newVal) => {
     if (newVal) updateNextGame(runDataActiveRunSurrounding);
@@ -56,7 +56,7 @@ $(() => {
     elem.innerHTML = value
       ? `<i class="fa-solid fa-sharp fa-headset"></i> ${value}`
       : "";
-    elem.classList.toggle('no_display', !value);
+    elem.classList.toggle("no_display", !value);
   }
 
   commentators.on("change", (newVal) => {
@@ -84,7 +84,7 @@ $(() => {
       setTimeout(() => {
         producerSpan.innerHTML = `<i class="fa-solid fa-microphone"></i> ${newVal}`;
         container.classList.add("active"); // slide in
-      }, 600)
+      }, 600);
     } else {
       container.classList.remove("active");
       // Slide out
@@ -135,7 +135,6 @@ $(() => {
   sponsorCarouselReplicant.on("change", (newValue) => {
     startSponsorCarousel(newValue);
   });
-
 
   donateStatus.on("change", (newVal) => {
     if (!donationInfoElem) return;
@@ -198,7 +197,6 @@ $(() => {
             player2Elem?.classList.add("place_1");
             player1Elem?.classList.add("place_2");
           }
-
         });
       });
     });
@@ -290,7 +288,6 @@ $(() => {
       elem.removeClass("hide");
     }, 1000);
   };
-
 
   setInterval(sceneUpdater, 15000);
   setInterval(textCarouselUpdater, 25000);

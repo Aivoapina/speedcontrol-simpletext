@@ -1,80 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <html>
+    <head>
+      <title>Intermission</title>
+      <meta charset="UTF-8" />
+      <script type="module" src="js/layouts.js"></script>
+      <link rel="stylesheet" href="css/intermission.css" />
+      <link rel="stylesheet" href="css/all.min.css" />
+      <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+      <script src="js/upcoming.js"></script>
+      <link rel="stylesheet" href="css/common.css" />
+    </head>
 
-<head>
-	<title>Intermission</title>
-	<meta charset="UTF-8" />
-	<script type="module" src="js/layouts.js"></script>
-	<link rel="stylesheet" href="css/intermission.css">
-	<link rel="stylesheet" href="css/all.min.css">
-	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-	<script src="js/upcoming.js"></script>
-	<link rel="stylesheet" href="css/common.css">
-</head>
+    <body>
+      <div class="layoutArea">
+        <div class="bigHeader">Valmistelemme seuraavaa peliä</div>
 
-<body>
-	<div class="layoutArea">
+        <div class="lowerHalf">
+          <div class="scheduleContainer">
+            <h2>SEURAAVAKSI</h2>
+            <div class="game-container">
+              <span id="upnextTitle"></span>
+              <div class="tagContainer">
+                <div class="tag">
+                  <i class="fa-solid fa-sharp fa-person-running"></i>
+                  <span id="upnextPlayer"></span>
+                </div>
+                <div class="tag">
+                  <i class="fa-solid fa-list"></i>
+                  <span id="upnextCategory"></span>
+                </div>
+              </div>
+            </div>
 
-		<div class="bigHeader">Valmistelemme seuraavaa peliä</div>
+            <h2>MYÖHEMMIN</h2>
+            <div class="later-container">
+              <span id="laterTitle"></span>
+              <div class="tagContainer">
+                <div class="tag">
+                  <i class="fa-solid fa-sharp fa-person-running"></i>
+                  <span id="laterPlayer"></span>
+                </div>
+                <div class="tag">
+                  <i class="fa-solid fa-list"></i>
+                  <span id="laterCategory"></span>
+                </div>
+              </div>
+            </div>
 
-		<div class="lowerHalf">
-			<div class="scheduleContainer">
-				<h2>SEURAAVAKSI</h2>
-				<div class="game-container">
-					<span id="upnextTitle"></span>
-					<div class="tagContainer">
-						<div class="tag">
-							<i class="fa-solid fa-sharp fa-person-running"></i>
-							<span id="upnextPlayer"></span>
-						</div>
-						<div class="tag">
-							<i class="fa-solid fa-list"></i>
-							<span id="upnextCategory"></span>
-						</div>
-					</div>
-				</div>
+            <div class="later-container">
+              <span id="later2Title"></span>
+              <div class="tagContainer">
+                <div class="tag">
+                  <i class="fa-solid fa-sharp fa-person-running"></i>
+                  <span id="later2Player"></span>
+                </div>
+                <div class="tag">
+                  <i class="fa-solid fa-list"></i>
+                  <span id="later2Category"></span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-				<h2>MYÖHEMMIN</h2>
-				<div class="later-container">
-					<span id="laterTitle"></span>
-					<div class="tagContainer">
-						<div class="tag">
-							<i class="fa-solid fa-sharp fa-person-running"></i>
-							<span id="laterPlayer"></span>
-						</div>
-						<div class="tag">
-							<i class="fa-solid fa-list"></i>
-							<span id="laterCategory"></span>
-						</div>
-					</div>
-				</div>
+          <div class="incentiveContainer">
+            <h2>KANNUSTIMIA</h2>
+            <div class="incentives" id="incentiveRoot"></div>
+          </div>
+          <script src="js/incentiveTracker.js"></script>
+        </div>
 
-				<div class="later-container">
-					<span id="later2Title"></span>
-					<div class="tagContainer">
-						<div class="tag">
-							<i class="fa-solid fa-sharp fa-person-running"></i>
-							<span id="later2Player"></span>
-						</div>
-						<div class="tag">
-							<i class="fa-solid fa-list"></i>
-							<span id="later2Category"></span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="incentiveContainer">
-				<h2>KANNUSTIMIA</h2>
-				<div class="incentives" id="incentiveRoot"></div>
-			</div>
-			<script src="js/incentiveTracker.js"></script>
-
-		</div>
-
-		<div id="bottomBar"></div>
-	</div>
-
-</body>
-
+        <div id="bottomBar"></div>
+      </div>
+    </body>
+  </html>
 </html>
