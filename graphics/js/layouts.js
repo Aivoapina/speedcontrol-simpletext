@@ -103,7 +103,7 @@ const LAYOUT_DEFS = {
         height: layoutHeight,
         gameplayWidth: 1245,
         gameplayHeight: 830,
-        cameraHeight: 370,
+        cameraHeight: 380,
         bottomHeight: bottomBarHeight,
         colors: LAYOUT_COLORS
     },
@@ -138,6 +138,15 @@ const LAYOUT_DEFS = {
         gameplayHeight: 1008,
         secondScreenHeight: 432,
         cameraHeight: 360,
+        bottomHeight: bottomBarHeight,
+        colors: LAYOUT_COLORS
+    },
+    "5-4": {
+        archetype: "tallscreen",
+        width: layoutWidth,
+        height: layoutHeight,
+        gameplayWidth: 1260,
+        cameraHeight: 400,
         bottomHeight: bottomBarHeight,
         colors: LAYOUT_COLORS
     },
