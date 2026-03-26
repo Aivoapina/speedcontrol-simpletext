@@ -53,6 +53,12 @@
         "width": 3,
         "file": "layoutcontrols.html",
         "workspace": "FINNRUNS Graphics"
+      },
+      {
+        "name": "Interview Controls",
+        "title": "Interview Controls",
+        "width": 3,
+        "file": "interviewcontrols.html"
       }
     ],
     "graphics": [
@@ -128,6 +134,11 @@
       },
       {
         "file": "intermission.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "interview.html",
         "width": 1920,
         "height": 1080
       }

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview</title>
+    <script type="module" src="js/layouts.js"></script>
+    <link rel="stylesheet" href="css/common.css" />
+    <style>
+        body {
+            width: 1920px;
+            height: 1080px;
+            margin: 0;
+        }
+
+        .container {
+            position: absolute;
+            width: 100%;
+            bottom: 200px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .leftContainer,
+        .rightContainer {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Start off-screen */
+        .leftContainer {
+            opacity: 0;
+            animation: slideInLeft 0.6s ease-out forwards;
+            animation-delay: 5s;
+        }
+
+        .rightContainer {
+            opacity: 0;
+            animation: slideInRight 0.6s ease-out forwards;
+            animation-delay: 5s;
+        }
+
+        /* Keyframes */
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+            }
+        }
+
+        #leftSideName,
+        #rightSideName {
+            font-size: 80px;
+            font-weight: bold;
+            text-shadow: 3px 3px rgba(0, 0, 0, 0.7);
+            text-transform: uppercase;
+            background-color: rgb(45, 45, 45);
+            padding: 0px 30px;
+        }
+
+        #leftSideName,
+        #leftSideDescription {
+            border-left: 5px solid var(--border-color);
+        }
+
+        #rightSideName,
+        #rightSideDescription {
+            border-right: 5px solid var(--border-color);
+        }
+
+        #leftSideDescription,
+        #rightSideDescription {
+            position: absolute;
+            top: 105%;
+            font-size: 35px;
+            white-space: nowrap;
+        }
+
+        #leftSideDescription {
+            left: 0;
+            text-align: left;
+        }
+
+        .desc {
+            background-color: rgb(45, 45, 45);
+            padding: 5px 10px;
+            font-weight: bold;
+            text-shadow: 2px 2px black;
+        }
+
+        #rightSideDescription {
+            right: 0;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="leftContainer">
+            <span id="leftSideName"></span>
+            <span class="desc" id="leftSideDescription"></span>
+        </div>
+
+        <div class="rightContainer">
+            <span id="rightSideName"></span>
+            <span class="desc" id="rightSideDescription"></span>
+        </div>
+    </div>
+
+    <script>
+        const speedcontrolBundle = "nodecg-speedcontrol";
+
+        const interviewData = nodecg.Replicant("interviewData", speedcontrolBundle);
+
+        NodeCG.waitForReplicants(interviewData).then(() => {
+            interviewData.on("change", (newVal) => {
+                if (!newVal) return;
+
+                document.getElementById("leftSideName").textContent = newVal.left || "";
+                document.getElementById("rightSideName").textContent = newVal.right || "";
+
+                document.getElementById("leftSideDescription").textContent = newVal.leftDesc || "";
+                document.getElementById("rightSideDescription").textContent = newVal.rightDesc || "";
+            });
+        });
+    </script>
+
+</body>
+
+</html>
