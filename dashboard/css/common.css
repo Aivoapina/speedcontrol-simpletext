@@ -36,6 +36,11 @@ button:active,
   background-color: #34559e;
 }
 
-select {
-  padding: 2px;
-}
+/* select,
+input {
+  padding: 10px;
+  color: white;
+  background-color: #272727;
+  border: none;
+  margin: 2px;
+} */
