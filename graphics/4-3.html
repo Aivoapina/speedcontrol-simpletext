@@ -1,38 +1,53 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4:3</title>
-    <link rel="stylesheet" href="css/common-full.css" />
-    <link rel="stylesheet" href="css/4-3.css" />
+    <title>4:3 Layout</title>
+
+    <script type="module" src="./js/layouts.js"></script>
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/tallscreen.css" />
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="js/run-info.js"></script>
     <script src="js/timer.js"></script>
   </head>
 
   <body>
-    <img id="4-3-bg" class="bgImg" src="img/bg_4-3.png" />
-
-    <div class="leftContainer">
-      <div class="hostContainer">
-        <div class="playerContainer">
-          <div id="player"></div>
-        </div>
-        <div id="commentatorContainer"></div>
-      </div>
-
-      <div id="gameContainer">
-        <div id="gameTitle"></div>
-        <div class="tags">
-          <div id="gameCategory" class="blue-bg"></div>
-          <div id="gameSystem" class="blue-bg"></div>
-          <div id="gameEstimate" class="blue-bg"></div>
-        </div>
-      </div>
-
-      <div id="timer"></div>
-      <img id="sponsor" src="img/sponsor_gamepit.png" />
+    <div id="camera">
+      <div class="tag" id="commentatorLeft"></div>
+      <div class="tag"><span id="player"></span></div>
+      <div class="tag" id="commentatorRight"></div>
     </div>
+    <div id="sponsor" class="leftBar">
+      <div class="gameContainer">
+        <span id="gameTitle"></span>
+        <div class="gameTagContainer">
+          <div class="tag">
+            <i class="fa-solid fa-list"></i>
+            <span id="gameCategory"></span>
+          </div>
+          <div class="tag">
+            <i class="fa-solid fa-gamepad"></i>
+            <span id="gameSystem"></span>
+          </div>
+          <div class="tag">
+            <i class="fa-solid fa-clock"></i>
+            <span id="gameEstimate"></span>
+          </div>
+        </div>
+      </div>
+      <div class="timerContainer">
+        <span id="timer">00:00:00</span>
+      </div>
+      <div class="imgContainer">
+        <img id="sponsorCarousel" src="" alt="Sponsor" />
+      </div>
+      <div class="tag producerContainer" id="producerName"></div>
+    </div>
+
+    <div id="gameplay"></div>
+
+    <div id="bottomBar"></div>
+    <div id="grid-container"></div>
   </body>
 </html>

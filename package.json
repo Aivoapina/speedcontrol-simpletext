@@ -18,10 +18,12 @@
     },
     "assetCategories": [
       {
-        "name": "backgrounds",
-        "title": "Backgrounds for overlays",
+        "name": "sponsor-imgs",
+        "title": "Sponsor images",
         "allowedTypes": [
-          "png"
+          "png",
+          "jpg",
+          "jpeg"
         ]
       }
     ],
@@ -42,13 +44,21 @@
         "name": "Text Carousel",
         "title": "Text Carousel",
         "width": 3,
-        "file": "textcarousel.html"
+        "file": "textcarousel.html",
+        "workspace": "FINNRUNS Graphics"
       },
       {
-        "name": "Backgrounds",
-        "title": "Backgrounds",
+        "name": "Layout Controls",
+        "title": "Layout Controls",
         "width": 3,
-        "file": "backgrounds.html"
+        "file": "layoutcontrols.html",
+        "workspace": "FINNRUNS Graphics"
+      },
+      {
+        "name": "Interview Controls",
+        "title": "Interview Controls",
+        "width": 3,
+        "file": "interviewcontrols.html"
       }
     ],
     "graphics": [
@@ -73,12 +83,32 @@
         "height": 1080
       },
       {
+        "file": "16-10.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
         "file": "4-3.html",
         "width": 1920,
         "height": 1080
       },
       {
-        "file": "upcoming.html",
+        "file": "10-9.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "3-2.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "5-4.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "nds.html",
         "width": 1920,
         "height": 1080
       },
@@ -93,12 +123,22 @@
         "height": 1080
       },
       {
-        "file": "3-2.html",
+        "file": "3-2-race.html",
         "width": 1920,
         "height": 1080
       },
       {
-        "file": "3-2-race.html",
+        "file": "upcoming.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "intermission.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "interview.html",
         "width": 1920,
         "height": 1080
       }

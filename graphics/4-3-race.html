@@ -1,42 +1,67 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4:3 race</title>
-    <link rel="stylesheet" href="css/4-3-race.css" />
-    <link rel="stylesheet" href="css/common-full.css" />
+    <title>4:3 Race Layout</title>
+
+    <script type="module" src="./js/layouts.js"></script>
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/race.css" />
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="js/run-info.js"></script>
+    <script src="js/racetime.js"></script>
     <script src="js/timer.js"></script>
   </head>
 
   <body>
-    <img id="4-3-race-bg" class="bgImg" src="img/bg_4-3-race.png" />
-    <div class="playersContainer">
-      <div class="playerContainer">
-        <div id="player1"></div>
+    <div id="gameplayLeft"></div>
+    <div id="gameplayRight"></div>
+
+    <div id="sponsor">
+      <div class="playerTimeContainer">
+        <div id="player1Time"></div>
       </div>
-      <div class="playerContainer">
-        <div id="player2"></div>
+      <div class="imgContainer">
+        <img id="sponsorCarousel" src="" alt="Sponsor" />
+      </div>
+      <div class="tag producerContainer" id="producerName"></div>
+    </div>
+
+    <div id="camera">
+      <div class="tag">
+        <span id="player1"></span>
+      </div>
+      <div class="tag" id="commentatorLeft"></div>
+      <div class="tag">
+        <span id="player2"></span>
       </div>
     </div>
 
-    <div class="leftContainer">
-      <div></div>
-      <img src="img/sponsor_gamepit.png" />
-    </div>
-
-    <div class="rightContainer">
-      <div id="gameContainer">
-        <div id="gameTitle"></div>
-        <div class="tags">
-          <div id="gameCategory"></div>
-          <div id="gameSystem"></div>
-          <div id="gameEstimate"></div>
+    <div id="runInfo">
+      <div id="player2Time"></div>
+      <div class="gameContainer">
+        <span id="gameTitle"></span>
+        <div class="gameTagContainer">
+          <div class="tag">
+            <i class="fa-solid fa-list"></i>
+            <span id="gameCategory"></span>
+          </div>
+          <div class="tag">
+            <i class="fa-solid fa-gamepad"></i>
+            <span id="gameSystem"></span>
+          </div>
+          <div class="tag">
+            <i class="fa-solid fa-clock"></i>
+            <span id="gameEstimate"></span>
+          </div>
         </div>
       </div>
-      <div id="timer"></div>
+      <div class="timerContainer">
+        <span id="timer">00:00:00</span>
+      </div>
     </div>
+
+    <div id="bottomBar"></div>
+    <div id="grid-container"></div>
   </body>
 </html>

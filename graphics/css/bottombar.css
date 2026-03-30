@@ -1,57 +1,75 @@
+:root {
+  --border-width: 2px;
+  --border-style: solid;
+}
+
 .bottomBar {
   width: 1920px;
-  height: 80px;
-  bottom: 0;
-
+  background-image: linear-gradient(
+    to top,
+    var(--bottom-gradient),
+    var(--top-gradient)
+  );
+  border-top: 2px solid var(--border-color);
+  display: grid;
+  grid-template-columns: 2fr 1fr 10fr 1fr;
+  font-size: 30px;
+  text-shadow: 2px 2px black;
   position: absolute;
+  bottom: 0;
+}
+
+.bottomBar div {
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 38px;
+  justify-content: center;
+  height: 72px;
 }
 
 .eventContainer {
-  position: absolute;
+  font-family: "Fugaz One";
+  border-right: var(--border-width) var(--border-style) var(--border-color);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 270px;
-  height: 100%;
-  left: 0;
-  font-family: "Fugaz One";
+  flex-direction: column;
 }
 
-#eventName {
-  font-size: 32px;
-  line-height: 1em;
+.eventContainer img {
+  object-fit: contain;
+  max-height: 85%;
+}
+
+.eventContainer span {
+  display: block;
+  line-height: 1;
+  transform: translateY(1px);
 }
 
 #eventSeason {
-  line-height: 1em;
-  font-size: 20px;
+  font-size: 18px;
   color: rgb(230, 230, 230);
-  font-weight: 100;
+  text-transform: uppercase;
 }
 
-.bottomBar span {
-  position: absolute;
-  text-align: center;
+.textCarouselContainer {
+  border-left: var(--border-width) var(--border-style) var(--border-color);
+  border-right: var(--border-width) var(--border-style) var(--border-color);
 }
 
-#donations {
-  left: 270px;
-  width: 190px;
+#donations,
+.textCarouselContainer,
+.clockContainer {
+  font-weight: bold;
 }
 
-#textCarousel {
-  width: 1285px;
-  left: 460px;
-  font-size: 32px;
-  text-transform: none;
+#donations,
+.clockContainer {
+  background-color: var(--bottom-gradient);
 }
 
-#time {
-  width: 175px;
-  left: 1745px;
+.clockContainer {
+  display: flex;
+  gap: 5px;
+  line-height: 1em;
 }

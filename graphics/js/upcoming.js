@@ -14,7 +14,7 @@ $(() => {
   });
 
   const updater = () => {
-    const now = new Date();
+    const now = new Date(2026, 0, 3, 16, 0, 0); // Accidentally forget to delete these and wonder why the auto schedule isn't working amirite gang haha hehe
 
     runs.forEach((run, index) => {
       if (!runs[index + 1]) return;

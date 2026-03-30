@@ -2,21 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/common.css" />
     <style>
-      .monospace {
-        font-family: monospace;
+      .container {
+        display: flex;
+      }
+
+      .container select {
+        flex-grow: 1;
       }
     </style>
   </head>
 
   <body>
     <div>
-      <div>
+      <div class="container">
         <select id="commentator-left"></select>
         <select id="commentator-right"></select>
-
-        <button id="setCommentators">Aseta</button>
       </div>
+      <button id="setCommentators">Aseta Selostaja</button>
+      <br />
+      <div class="container">
+        <select id="producer"></select>
+      </div>
+      <button id="setProducer">Aseta tuottaja</button>
       <br />
       <div>
         <label for="newCommentator">Lisää kommentoija:</label>
@@ -25,7 +34,6 @@
       <button id="addCommentator">Lisää</button>
     </div>
 
-    <br />
     <script>
       const speedcontrolBundle = "nodecg-speedcontrol";
 
@@ -35,9 +43,14 @@
         speedcontrolBundle,
       );
       const commentators = nodecg.Replicant("commentators", speedcontrolBundle);
+      const producerReplicant = nodecg.Replicant(
+        "producer",
+        speedcontrolBundle,
+      );
 
       const setCommentatorsButton = document.getElementById("setCommentators");
       const addCommentatorButton = document.getElementById("addCommentator");
+      const setProducerButton = document.getElementById("setProducer");
 
       NodeCG.waitForReplicants(
         runDataArray,
@@ -60,14 +73,17 @@
         allCommentators.on("change", (newVal) => {
           const left = document.getElementById("commentator-left");
           const right = document.getElementById("commentator-right");
+          const producer = document.getElementById("producer");
 
           left.innerHTML = "";
           right.innerHTML = "";
+          producer.innerHTML = "";
 
           const option = document.createElement("option");
 
           left.appendChild(option);
           right.appendChild(option.cloneNode(true));
+          producer.appendChild(option.cloneNode(true));
 
           newVal.forEach((player) => {
             const leftOption = document.createElement("option");
@@ -75,14 +91,18 @@
             leftOption.text = player;
 
             const rightOption = leftOption.cloneNode(true);
+            const producerOption = leftOption.cloneNode(true);
 
             if (player === commentators.value.left) {
               leftOption.selected = true;
             } else if (player === commentators.value.right) {
               rightOption.selected = true;
+            } else if (player === producerReplicant.value) {
+              producerOption.selected = true;
             }
             left.appendChild(leftOption);
             right.appendChild(rightOption);
+            producer.appendChild(producerOption);
           });
         });
       });
@@ -98,6 +118,12 @@
           left: leftValue,
           right: rightValue,
         };
+      };
+
+      setProducerButton.onclick = () => {
+        const producer = document.getElementById("producer");
+        const producerValue = producer.options[producer.selectedIndex].value;
+        producerReplicant.value = producerValue;
       };
 
       addCommentatorButton.onclick = () => {

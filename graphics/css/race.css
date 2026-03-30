@@ -1,0 +1,58 @@
+#sponsor {
+  place-content: center;
+}
+
+.imgContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+#runInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#gameTitle {
+  font-size: 40px;
+}
+
+.gameTagContainer {
+  font-size: 22px;
+}
+
+.timerContainer {
+  font-size: 80px;
+}
+
+.gameScreen {
+  border-left: var(--border-width) var(--border-style) var(--border-color);
+}
+
+#player1Time,
+#player2Time {
+  position: absolute;
+  font-weight: bold;
+  font-size: 25px;
+  padding: 5px 15px;
+  text-shadow: 2px 2px black;
+}
+
+#player1Time:empty,
+#player2Time:empty {
+  display: none;
+}
+
+#player1Time {
+  top: 0;
+  left: 0;
+}
+
+#player2Time {
+  top: 0;
+  right: 0;
+}

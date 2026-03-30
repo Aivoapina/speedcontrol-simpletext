@@ -2,22 +2,48 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fugaz+One&family=PT+Sans+Narrow:wght@400;700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/common.css" />
     <style>
-      .monospace {
-        font-family: monospace;
-      }
       #messagesUrl,
       #url {
         width: 350px;
       }
+
       #donationInfo {
         height: 30px;
       }
+
       #donationMessages {
         font-size: 22px;
       }
+
       #donationMessages input {
         display: inline-block;
+      }
+
+      #donationMessagesList > div {
+        margin: 5px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+      .donation-amount,
+      .donor-name {
+        font-weight: bold;
+        line-height: 1.8em;
+      }
+
+      .message-read {
+        opacity: 0.4;
+      }
+
+      .incentive {
+        font-size: 18px;
+        font-family: "Roboto";
       }
     </style>
     <title>Lahjoitukset</title>
@@ -39,7 +65,7 @@
     <br />
 
     <div>
-      <button id="toggleDonationStatus">Lahjoja, LAHJOJA!</button>
+      <button id="toggleDonationStatus">Lahjoituksia luettavana!</button>
       <h3 id="donationInfo"></h3>
     </div>
 
@@ -81,7 +107,11 @@
         document.getElementById("donationMessages").style.display = "none";
       }
 
-      NodeCG.waitForReplicants(urlReplicant, donateReplicant, donateMessagesUrlReplicant).then(() => {
+      NodeCG.waitForReplicants(
+        urlReplicant,
+        donateReplicant,
+        donateMessagesUrlReplicant,
+      ).then(() => {
         urlReplicant.on("change", (url) => {
           urlInput.value = url;
         });
@@ -111,6 +141,9 @@
             const readElem = document.createElement("input");
             readElem.type = "checkbox";
             readElem.checked = message.read;
+            if (message.read) {
+              containerElem.classList.add("message-read");
+            }
             readElem.onchange = () => {
               donateMessagesReplicant.value.map((m) => {
                 if (m.id === message.id) {
@@ -126,8 +159,9 @@
               game,
               title,
             } = message;
-            incElem.innerHTML = `${game} - ${title}${incValue ? ` (${incValue})` : ""}`;
-            messageElem.innerHTML = `${amount}€ ${name}: ${msg}`;
+            incElem.innerHTML = `<span class="incentive">${game} - ${title}${incValue ? ` (${incValue})` : ""}</span>`;
+            messageElem.innerHTML = `<span class="donation-amount">${amount}€</span> <span class="donor-name">${name}</span>:
+          <br>${msg}`;
             containerElem.appendChild(readElem);
             containerElem.appendChild(messageElem);
             containerElem.appendChild(incElem);
