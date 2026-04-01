@@ -1,54 +1,10 @@
-// ==========================
-// MOCK INCENTIVE DATA
-// ==========================
-
-const mockIncentives = [
-  {
-    type: "milestone",
-    game: "Metal Gear Solid",
-    name: "Pelastetaanko Meryl?",
-    current: 20,
-    target: 100,
-  },
-  {
-    type: "bidwar",
-    game: "Crash Team Racing: Saphire",
-    name: "Valitse hahmo",
-    options: [
-      { name: "Fake Crash", amount: 14 },
-      { name: "Pura", amount: 50 },
-      { name: "Penta Penguin", amount: 1 },
-      { name: "Polar", amount: 99 },
-      { name: "Ripper Roo", amount: 100 },
-      { name: "Crash Bandicoot", amount: 25 },
-      { name: "Komodo Joe", amount: 66 },
-      { name: "Cortex", amount: 75 },
-    ],
-  },
-  {
-    type: "milestone",
-    game: "Spyro 3: Year of the Dragon",
-    name: "Kerätään ihan kaikki munat",
-    current: 13,
-    target: 50,
-  },
-  {
-    type: "bidwar",
-    game: "Sifu",
-    name: "Pelataanko mies- vai naishahmolla?",
-    options: [
-      { name: "Mieshahmo", amount: 10 },
-      { name: "Naishahmo", amount: 25 },
-    ],
-  },
-];
-
-incentives = mockIncentives;
-// =========== MOCK DATA END
+const INCENTIVE_API_URL = "https://lahjoita.finnruns.fi/api/incentives";
+let incentives = [];
 
 const incentiveLayouts = {
   milestone: renderMilestone,
-  bidwar: renderBidwar,
+  freeChoice: renderBidwar,
+  fixedChoice: renderBidwar,
 };
 
 const incentiveRoot = document.getElementById("incentiveRoot");
@@ -62,9 +18,9 @@ function renderMilestone(root, incentive) {
         <span class="gameName">${incentive.game}</span>
         <div class="progressContainer">
             <div class="incentiveTextContainer">
-                <span>${incentive.current}€</span>
-                <span>${incentive.name}</span>
-                <span>${incentive.target}€</span>
+                <span>${incentive.milestone.raised}€</span>
+                <span>${incentive.title}</span>
+                <span>${incentive.milestone.goal}€</span>
             </div>
             <div class="progressFill"></div>
         </div>
@@ -73,19 +29,19 @@ function renderMilestone(root, incentive) {
   // Fill bar logic
   const container = root.querySelector(".progressContainer");
   const fill = container.querySelector(".progressFill");
-  const percent = Math.min(incentive.current / incentive.target, 1) * 100;
+  const percent =
+    Math.min(incentive.milestone.raised / incentive.milestone.goal, 1) * 100;
   fill.style.width = `${percent}%`;
 }
 
 function renderBidwar(root, incentive) {
   root.innerHTML = `
         <span class="gameName">${incentive.game}</span>
-        <div class="bidwarTitle">${incentive.name}</div>
+        <div class="bidwarTitle">${incentive.title}</div>
     `;
 
-  const sortedOptions = [...incentive.options].sort(
-    (a, b) => b.amount - a.amount,
-  );
+  const options = incentive.incentiveValues ? incentive.incentiveValues : [];
+  const sortedOptions = [...options].sort((a, b) => b.amount - a.amount);
   const maxAmount = Math.max(...sortedOptions.map((o) => o.amount));
 
   sortedOptions.forEach((option, index) => {
@@ -110,7 +66,7 @@ function renderBidwar(root, incentive) {
 }
 
 function renderIncentive(incentive) {
-  const renderer = incentiveLayouts[incentive.type];
+  const renderer = incentiveLayouts[incentive.incentiveType];
   if (!renderer) return;
   renderer(incentiveRoot, incentive);
 }
@@ -131,5 +87,16 @@ function showNextIncentive() {
   }, 400);
 }
 
-showNextIncentive();
+const fetchIncentives = async () => {
+  try {
+    const res = await fetch(INCENTIVE_API_URL);
+    const data = await res.json();
+    incentives = data.slice(0, 3);
+    showNextIncentive();
+  } catch (error) {
+    console.log("failed to fetch incentives", error);
+  }
+};
+
+fetchIncentives();
 setInterval(showNextIncentive, 15000);
