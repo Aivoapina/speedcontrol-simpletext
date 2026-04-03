@@ -105,12 +105,21 @@ const fetchIncentives = async () => {
   try {
     const res = await fetch(INCENTIVE_API_URL);
     const data = await res.json();
-    incentives = data.slice(0, 3);
-    showNextIncentive();
+    if (incentives.length === 0) {
+      incentives = data.slice(0, 3);
+    } else {
+      data.forEach((newIncentive) => {
+        const existing = incentives.find((i) => i.id === newIncentive.id);
+        if (existing) {
+          Object.assign(existing, newIncentive);
+        }
+      });
+    }
   } catch (error) {
     console.log("failed to fetch incentives", error);
   }
 };
 
 fetchIncentives();
+showNextIncentive();
 setInterval(showNextIncentive, 15000);

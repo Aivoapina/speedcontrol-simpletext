@@ -176,6 +176,10 @@
           messagesUrlInput.value = messagesUrl;
         });
 
+        incentiveApiKeyReplicant.on("change", (apiKey) => {
+          apiKeyInput.value = apiKey;
+        });
+
         donateMessagesReplicant.on("change", (messages, oldVal) => {
           const messagesListElem = document.getElementById(
             "donationMessagesList",
@@ -217,7 +221,7 @@
           });
         });
         fetchClosingIncentives();
-        startInterVal(() => {
+        setInterval(() => {
           if (donateReplicant.value) {
             fetchClosingIncentives();
           }
