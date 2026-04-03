@@ -7,11 +7,11 @@ module.exports = async function (nodecg) {
   const donateUrlReplicant = nodecg.Replicant("donateUrl", speedcontrolBundle);
   const donateAmountReplicant = nodecg.Replicant("donateAmount", speedcontrolBundle);
 
-  const donateMessagesUrlReplicant = nodecg.Replicant("donateMessagesUrl", speedcontrolBundle);
+  const incentiveApiUrlReplicant = nodecg.Replicant("incentiveApiUrl", speedcontrolBundle);
   const donateMessages = nodecg.Replicant("donateMessages", speedcontrolBundle);
 
   let donateUrl = donateUrlReplicant.value;
-  let donateMessagesUrl = donateMessagesUrlReplicant.value;
+  let incentiveApiUrl = incentiveApiUrlReplicant.value;
 
   let msgErrorCount = 0;
   let donateMessageInterval;
@@ -31,9 +31,9 @@ module.exports = async function (nodecg) {
   }
 
   const donateMessageFetcher = async () => {
-    if (!donateMessagesUrl) return;
+    if (!incentiveApiUrl) return;
     try {
-      const res = await fetch(donateMessagesUrl);
+      const res = await fetch(`${incentiveApiUrl}/donations`);
       const data = await res.json();
 
       if (!data) return;
@@ -84,8 +84,8 @@ module.exports = async function (nodecg) {
     donateUrl = val;
   });
 
-  donateMessagesUrlReplicant.on("change", (val) => {
-    donateMessagesUrl = val;
+  incentiveApiUrlReplicant.on("change", (val) => {
+    incentiveApiUrl = val;
     if (!donateMessageInterval) {
       donateMessageInterval = setInterval(donateMessageFetcher, 10000);
     }

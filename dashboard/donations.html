@@ -56,13 +56,19 @@
         <input id="url" type="text" />
       </div>
       <div>
-        <label for="messagesUrl">Lahjoitus viesti URL</label>
+        <label for="messagesUrl">Lahjoitus API URL</label>
         <input id="messagesUrl" type="text" />
+      </div>
+      <div>
+        <label for="apiKey">Lahjoitus API Key</label>
+        <input id="apiKey" type="text" />
       </div>
       <button id="setUrl">Aseta</button>
     </div>
 
-    <br />
+    <div id="closingIncetivesContainer">
+
+    </div>
 
     <div>
       <button id="toggleDonationStatus">Lahjoituksia luettavana!</button>
@@ -80,6 +86,7 @@
       const urlInput = document.querySelector("#url");
       const setUrlButton = document.querySelector("#setUrl");
       const messagesUrlInput = document.querySelector("#messagesUrl");
+      const apiKeyInput = document.querySelector("#apiKey");
 
       const toggleDonationStatusElem = document.getElementById(
         "toggleDonationStatus",
@@ -94,8 +101,12 @@
         "donateStatus",
         speedcontrolBundle,
       );
-      const donateMessagesUrlReplicant = nodecg.Replicant(
-        "donateMessagesUrl",
+      const incentiveApiUrlReplicant = nodecg.Replicant(
+        "incentiveApiUrl",
+        speedcontrolBundle,
+      );
+      const incentiveApiKeyReplicant = nodecg.Replicant(
+        "incentiveApiKey",
         speedcontrolBundle,
       );
       const donateMessagesReplicant = nodecg.Replicant(
@@ -105,12 +116,49 @@
 
       if (!window.location.search) {
         document.getElementById("donationMessages").style.display = "none";
+        document.getElementById("closingIncetivesContainer").style.display = "none";
       }
+
+      const fetchClosingIncentives = async () => {
+        const res = await fetch(`${incentiveApiUrlReplicant.value}/incentives?getActive=true`);
+        const data = await res.json();
+
+        const container = document.getElementById("closingIncetivesContainer");
+        container.innerHTML = "<h3>Seuraavat kannustimet</h3>";
+
+        const filteredData = data.slice(0, 3);
+
+        filteredData.forEach((inc) => {
+          const incElem = document.createElement("div");
+          incElem.classList.add("incentive");
+          incElem.innerHTML = `${inc.game} - ${inc.title}`;
+          const closeButton = document.createElement('button')
+          closeButton.innerText = 'Sulje'
+          closeButton.onclick = () => {
+            if (window.confirm(`Suljetaanko ${inc.game} - ${inc.title} kannustin?`)) {
+              fetch(`${incentiveApiUrlReplicant.value}/incentives/admin`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  id: inc.id,
+                  apikey: incentiveApiKeyReplicant.value,
+                }),
+              });
+            }
+          };
+
+          container.appendChild(incElem);
+          container.appendChild(closeButton);
+        });
+      };
 
       NodeCG.waitForReplicants(
         urlReplicant,
         donateReplicant,
-        donateMessagesUrlReplicant,
+        incentiveApiUrlReplicant,
+        incentiveApiKeyReplicant,
       ).then(() => {
         urlReplicant.on("change", (url) => {
           urlInput.value = url;
@@ -124,7 +172,7 @@
           }
         });
 
-        donateMessagesUrlReplicant.on("change", (messagesUrl) => {
+        incentiveApiUrlReplicant.on("change", (messagesUrl) => {
           messagesUrlInput.value = messagesUrl;
         });
 
@@ -168,11 +216,18 @@
             messagesListElem.appendChild(containerElem);
           });
         });
+        fetchClosingIncentives();
+        startInterVal(() => {
+          if (donateReplicant.value) {
+            fetchClosingIncentives();
+          }
+        }, 30000);
       });
 
       setUrlButton.onclick = () => {
         urlReplicant.value = urlInput.value;
-        donateMessagesUrlReplicant.value = messagesUrlInput.value;
+        incentiveApiUrlReplicant.value = messagesUrlInput.value;
+        incentiveApiKeyReplicant.value = apiKeyInput.value;
       };
 
       toggleDonationStatusElem.onclick = () => {

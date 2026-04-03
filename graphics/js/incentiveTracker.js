@@ -1,4 +1,4 @@
-const INCENTIVE_API_URL = "https://lahjoita.finnruns.fi/api/incentives";
+const INCENTIVE_API_URL = "https://lahjoita.finnruns.fi/api/incentives?getActive=true";
 let incentives = [];
 
 const incentiveLayouts = {
@@ -43,6 +43,20 @@ function renderBidwar(root, incentive) {
   const options = incentive.incentiveValues ? incentive.incentiveValues : [];
   const sortedOptions = [...options].sort((a, b) => b.amount - a.amount);
   const maxAmount = Math.max(...sortedOptions.map((o) => o.amount));
+
+  if (sortedOptions.length === 0) {
+    const container = document.createElement("div");
+    container.style.position = "relative";
+    container.innerHTML = `
+            <div class="incentiveTextContainer">
+                <span class="bidwarNoOptions">Ei vielä vaihtoehtoja. Lisää oma ehdotuksesi osoitteessa lahjoita.finnruns.fi</span>
+            </div>
+        `;
+
+    root.appendChild(container);
+    return;
+  }
+
 
   sortedOptions.forEach((option, index) => {
     const container = document.createElement("div");
