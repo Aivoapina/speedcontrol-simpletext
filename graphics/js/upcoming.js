@@ -3,18 +3,26 @@ $(() => {
   const speedcontrolBundle = "nodecg-speedcontrol";
 
   const runDataArray = nodecg.Replicant("runDataArray", speedcontrolBundle);
+  const scheduleAdjustmentReplicant = nodecg.Replicant("scheduleAdjustment", speedcontrolBundle);
 
   let runs = [];
 
-  runDataArray.on("change", (newVal) => {
-    if (newVal) {
-      runs = newVal;
-      updater(runs);
-    }
+   NodeCG.waitForReplicants(scheduleAdjustmentReplicant, runDataArray).then(() => {
+    runDataArray.on("change", (newVal) => {
+      if (newVal) {
+        runs = newVal;
+        updater(runs);
+      }
+    });
   });
 
   const updater = () => {
-    const now = new Date(2026, 0, 3, 16, 0, 0); // Accidentally forget to delete these and wonder why the auto schedule isn't working amirite gang haha hehe
+    const now = new Date();
+
+    if (scheduleAdjustmentReplicant.value && !isNaN(scheduleAdjustmentReplicant.value)) {
+      const adjustmentMs = parseInt(scheduleAdjustmentReplicant.value) * 60 * 1000;
+      now.setTime(now.getTime() + adjustmentMs);
+    }
 
     runs.forEach((run, index) => {
       if (!runs[index + 1]) return;
@@ -63,23 +71,27 @@ $(() => {
   };
 
   const setTexts = (name, run) => {
-    if (!run) return;
-
     const title = $(`#${name}Title`);
     const category = $(`#${name}Category`);
     const player = $(`#${name}Player`);
 
+    if (!run) {
+      category.parent().hide();
+      player.parent().hide();
+      return;
+    }
+
     const names = getPlayerNames(run.teams);
 
     if (!run.category) {
-      category.hide();
+      category.parent().hide();
     } else {
-      category.show();
+      category.parent().show();
     }
     if (!names) {
-      player.hide();
+      player.parent().hide();
     } else {
-      player.show();
+      player.parent().show();
     }
 
     title.text(run.game);
