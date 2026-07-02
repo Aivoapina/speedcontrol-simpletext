@@ -80,7 +80,7 @@ function renderBidwar(root, incentive) {
 }
 
 function renderIncentive(incentive) {
-  const renderer = incentiveLayouts[incentive.incentiveType];
+  const renderer = incentiveLayouts[incentive.type];
   if (!renderer) return;
   renderer(incentiveRoot, incentive);
 }
