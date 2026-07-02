@@ -41,7 +41,7 @@ function renderBidwar(root, incentive) {
     `;
 
   const options = incentive.incentiveValues ? incentive.incentiveValues : [];
-  const sortedOptions = [...options].sort((a, b) => b.amount - a.amount);
+  const sortedOptions = [...options].sort((a, b) => b.amount - a.amount).slice(0, 9);
   const maxAmount = Math.max(...sortedOptions.map((o) => o.amount));
 
   if (sortedOptions.length === 0) {
