@@ -26,6 +26,12 @@ const QUEST_COLORS = {
   topGradient: "#097859",
 };
 
+const RUSKA_COLORS = {
+  borderColor: "#e27b26",
+  bottomGradient: "#9A3418",
+  topGradient: "#DE912B"
+}
+
 // This object will always reflect the currently selected colors
 const LAYOUT_COLORS = { ...FINNRUNS_COLORS };
 
@@ -38,6 +44,9 @@ colorSelectorRep.on("change", (newValue) => {
     case "QUEST":
       Object.assign(LAYOUT_COLORS, QUEST_COLORS);
       break;
+	case "RUSKA":
+	  Object.assign(LAYOUT_COLORS, RUSKA_COLORS);
+	  break
   }
 
   // Re-apply CSS variables immediately
