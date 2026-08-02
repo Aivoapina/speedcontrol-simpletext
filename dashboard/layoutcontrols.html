@@ -13,20 +13,12 @@
   <body>
     <div>
       <h1>Väriteema</h1>
-      <div style="display: flex; gap: 10px">
-        <label>
-          <input type="radio" name="option" value="FINNRUNS" />
-          FINNRUNS
-        </label>
-        <label>
-          <input type="radio" name="option" value="QUEST" />
-          FINNRUNS QUEST
-        </label>
-		<label>
-          <input type="radio" name="option" value="RUSKA" />
-          RUSKA
-        </label>
-      </div>
+
+      <select id="themeSelect">
+        <option value="FINNRUNS">FINNRUNS</option>
+        <option value="QUEST">FINNRUNS QUEST</option>
+        <option value="RUSKA">FINNRUNS RUSKA</option>
+      </select>
     </div>
 
     <script>
@@ -34,19 +26,14 @@
         defaultValue: "FINNRUNS",
       });
 
-      const radios = document.querySelectorAll('input[name="option"]');
+      const select = document.getElementById("themeSelect");
 
       selectionRep.on("change", (newValue) => {
-        radios.forEach((radio) => {
-          radio.checked = radio.value === newValue;
-        });
+        select.value = newValue;
       });
-      radios.forEach((radio) => {
-        radio.addEventListener("change", () => {
-          if (radio.checked) {
-            selectionRep.value = radio.value;
-          }
-        });
+
+      select.addEventListener("change", () => {
+        selectionRep.value = select.value;
       });
     </script>
   </body>
