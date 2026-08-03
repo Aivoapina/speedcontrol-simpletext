@@ -6,34 +6,137 @@
     <style>
       select {
         width: 100%;
+        margin-bottom: 16px;
+      }
+      .color-grid {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+      }
+      .color-grid label {
+        font-weight: bold;
+      }
+      input[type="color"] {
+        width: 60px;
+        height: 32px;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+      }
+      .save-button {
+        margin-top: 20px;
+        width: 100%;
       }
     </style>
   </head>
-
   <body>
-    <div>
-      <h1>Väriteema</h1>
-
-      <select id="themeSelect">
-        <option value="FINNRUNS">FINNRUNS</option>
-        <option value="QUEST">FINNRUNS QUEST</option>
-        <option value="RUSKA">FINNRUNS RUSKA</option>
-      </select>
+    <h1>Väriteema</h1>
+    <select id="themeSelect">
+      <option value="FINNRUNS">FINNRUNS</option>
+      <option value="QUEST">FINNRUNS QUEST</option>
+      <option value="RUSKA">FINNRUNS RUSKA</option>
+    </select>
+    <div class="color-grid">
+      <label for="borderColor">Border Color</label>
+      <input type="color" id="borderColor" />
+      <label for="bottomGradient">Bottom Gradient</label>
+      <input type="color" id="bottomGradient" />
+      <label for="topGradient">Top Gradient</label>
+      <input type="color" id="topGradient" />
+      <button id="resetButton">Reset to defaults</button>
     </div>
-
     <script>
-      const selectionRep = nodecg.Replicant("eventColors", {
-        defaultValue: "FINNRUNS",
+      const eventColorsRep = nodecg.Replicant("eventColors", {
+        defaultValue: {
+          selected: "FINNRUNS",
+
+          themes: {
+            FINNRUNS: {
+              borderColor: "#2C7CB2",
+              bottomGradient: "#08426A",
+              topGradient: "#09558B",
+            },
+
+            QUEST: {
+              borderColor: "#23926C",
+              bottomGradient: "#17523C",
+              topGradient: "#097859",
+            },
+
+            RUSKA: {
+              borderColor: "#e2760a",
+              bottomGradient: "#9a4419",
+              topGradient: "#de5629",
+            },
+          },
+        },
       });
+
+      const DEFAULT_THEMES = {
+        FINNRUNS: {
+          borderColor: "#2C7CB2",
+          bottomGradient: "#08426A",
+          topGradient: "#09558B",
+        },
+        QUEST: {
+          borderColor: "#23926C",
+          bottomGradient: "#17523C",
+          topGradient: "#097859",
+        },
+        RUSKA: {
+          borderColor: "#e2760a",
+          bottomGradient: "#9a4419",
+          topGradient: "#de5629",
+        },
+      };
+
+      const borderColor = document.getElementById("borderColor");
+      const bottomGradient = document.getElementById("bottomGradient");
+      const topGradient = document.getElementById("topGradient");
+      const resetButton = document.getElementById("resetButton");
 
       const select = document.getElementById("themeSelect");
 
-      selectionRep.on("change", (newValue) => {
-        select.value = newValue;
+      eventColorsRep.on("change", (value) => {
+        if (!value) return;
+
+        select.value = value.selected;
+
+        const theme = value.themes[value.selected];
+
+        borderColor.value = theme.borderColor;
+        bottomGradient.value = theme.bottomGradient;
+        topGradient.value = theme.topGradient;
+      });
+
+      function saveCurrentTheme() {
+        const theme =
+          eventColorsRep.value.themes[eventColorsRep.value.selected];
+
+        theme.borderColor = borderColor.value;
+        theme.bottomGradient = bottomGradient.value;
+        theme.topGradient = topGradient.value;
+      }
+
+      borderColor.addEventListener("input", saveCurrentTheme);
+      bottomGradient.addEventListener("input", saveCurrentTheme);
+      topGradient.addEventListener("input", saveCurrentTheme);
+
+      resetButton.addEventListener("click", () => {
+        const selected = eventColorsRep.value.selected;
+
+        Object.assign(
+          eventColorsRep.value.themes[selected],
+          DEFAULT_THEMES[selected],
+        );
       });
 
       select.addEventListener("change", () => {
-        selectionRep.value = select.value;
+        if (!eventColorsRep.value) return;
+
+        eventColorsRep.value.selected = select.value;
       });
     </script>
   </body>
