@@ -3,24 +3,33 @@ $(() => {
   const speedcontrolBundle = "nodecg-speedcontrol";
 
   const runDataArray = nodecg.Replicant("runDataArray", speedcontrolBundle);
-  const scheduleAdjustmentReplicant = nodecg.Replicant("scheduleAdjustment", speedcontrolBundle);
+  const scheduleAdjustmentReplicant = nodecg.Replicant(
+    "scheduleAdjustment",
+    speedcontrolBundle,
+  );
 
   let runs = [];
 
-   NodeCG.waitForReplicants(scheduleAdjustmentReplicant, runDataArray).then(() => {
-    runDataArray.on("change", (newVal) => {
-      if (newVal) {
-        runs = newVal;
-        updater(runs);
-      }
-    });
-  });
+  NodeCG.waitForReplicants(scheduleAdjustmentReplicant, runDataArray).then(
+    () => {
+      runDataArray.on("change", (newVal) => {
+        if (newVal) {
+          runs = newVal;
+          updater(runs);
+        }
+      });
+    },
+  );
 
   const updater = () => {
     const now = new Date();
 
-    if (scheduleAdjustmentReplicant.value && !isNaN(scheduleAdjustmentReplicant.value)) {
-      const adjustmentMs = parseInt(scheduleAdjustmentReplicant.value) * 60 * 1000;
+    if (
+      scheduleAdjustmentReplicant.value &&
+      !isNaN(scheduleAdjustmentReplicant.value)
+    ) {
+      const adjustmentMs =
+        parseInt(scheduleAdjustmentReplicant.value) * 60 * 1000;
       now.setTime(now.getTime() + adjustmentMs);
     }
 

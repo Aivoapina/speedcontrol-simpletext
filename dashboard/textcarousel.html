@@ -20,7 +20,8 @@
 
       <div>
         <label for="scheduleAdjustment">
-          Aikataulun säätö minuutteina (positiivinen edellä, negatiivinen jäljessä)
+          Aikataulun säätö minuutteina (positiivinen edellä, negatiivinen
+          jäljessä)
         </label>
         <input id="scheduleAdjustment" type="number" />
         <button id="setScheduleAdjustment">Aseta</button>
@@ -32,8 +33,11 @@
       const textCarouselTextElem = document.getElementById("textCarouselText");
       const setTextCarouselButton = document.getElementById("setTextCarousel");
 
-      const scheduleAdjustmentElem = document.getElementById("scheduleAdjustment");
-      const setScheduleAdjustmentButton = document.getElementById("setScheduleAdjustment");
+      const scheduleAdjustmentElem =
+        document.getElementById("scheduleAdjustment");
+      const setScheduleAdjustmentButton = document.getElementById(
+        "setScheduleAdjustment",
+      );
 
       const textCarouselReplicant = nodecg.Replicant(
         "textCarousel",
@@ -44,7 +48,10 @@
         speedcontrolBundle,
       );
 
-      NodeCG.waitForReplicants(textCarouselReplicant, scheduleAdjustmentReplicant).then(() => {
+      NodeCG.waitForReplicants(
+        textCarouselReplicant,
+        scheduleAdjustmentReplicant,
+      ).then(() => {
         textCarouselReplicant.on("change", (text) => {
           textCarouselTextElem.value = text;
         });

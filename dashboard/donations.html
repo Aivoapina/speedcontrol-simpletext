@@ -66,9 +66,7 @@
       <button id="setUrl">Aseta</button>
     </div>
 
-    <div id="closingIncetivesContainer">
-
-    </div>
+    <div id="closingIncetivesContainer"></div>
 
     <div>
       <button id="toggleDonationStatus">Lahjoituksia luettavana!</button>
@@ -116,11 +114,14 @@
 
       if (!window.location.search) {
         document.getElementById("donationMessages").style.display = "none";
-        document.getElementById("closingIncetivesContainer").style.display = "none";
+        document.getElementById("closingIncetivesContainer").style.display =
+          "none";
       }
 
       const fetchClosingIncentives = async () => {
-        const res = await fetch(`${incentiveApiUrlReplicant.value}/incentives?getActive=true`);
+        const res = await fetch(
+          `${incentiveApiUrlReplicant.value}/incentives?getActive=true`,
+        );
         const data = await res.json();
 
         const container = document.getElementById("closingIncetivesContainer");
@@ -132,14 +133,18 @@
           const incElem = document.createElement("div");
           incElem.classList.add("incentive");
           incElem.innerHTML = `${inc.game} - ${inc.title}`;
-          const closeButton = document.createElement('button')
-          closeButton.innerText = 'Sulje'
+          const closeButton = document.createElement("button");
+          closeButton.innerText = "Sulje";
           closeButton.onclick = () => {
-            if (window.confirm(`Suljetaanko ${inc.game} - ${inc.title} kannustin?`)) {
+            if (
+              window.confirm(
+                `Suljetaanko ${inc.game} - ${inc.title} kannustin?`,
+              )
+            ) {
               fetch(`${incentiveApiUrlReplicant.value}/incentives/admin`, {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                  'Content-Type': 'application/json',
+                  "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                   id: inc.id,
