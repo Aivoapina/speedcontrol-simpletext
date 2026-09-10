@@ -2,8 +2,30 @@
 // REPLICANTS
 // ==========
 
-const colorSelectorRep = nodecg.Replicant("eventColors", {
-  defaultValue: "FINNRUNS",
+const eventColorsRep = nodecg.Replicant("eventColors", {
+  defaultValue: {
+    selected: "FINNRUNS",
+
+    themes: {
+      FINNRUNS: {
+        borderColor: "#2C7CB2",
+        bottomGradient: "#08426A",
+        topGradient: "#09558B",
+      },
+
+      QUEST: {
+        borderColor: "#23926C",
+        bottomGradient: "#17523C",
+        topGradient: "#097859",
+      },
+
+      RUSKA: {
+        borderColor: "#e2760a",
+        bottomGradient: "#9a4419",
+        topGradient: "#de5629",
+      },
+    },
+  },
 });
 
 // ==================
@@ -14,39 +36,23 @@ const layoutWidth = 1920;
 const layoutHeight = 1080;
 const bottomBarHeight = 72;
 
-const FINNRUNS_COLORS = {
-  borderColor: "#2C7CB2",
-  bottomGradient: "#08426A",
-  topGradient: "#09558B",
-};
+const LAYOUT_COLORS = {};
 
-const QUEST_COLORS = {
-  borderColor: "#23926C",
-  bottomGradient: "#17523C",
-  topGradient: "#097859",
-};
+eventColorsRep.on("change", (value) => {
+  console.log("Replicant:", value);
+  if (!value) return;
 
-// This object will always reflect the currently selected colors
-const LAYOUT_COLORS = { ...FINNRUNS_COLORS };
+  console.log("Selected:", value.selected);
+  console.log("Theme:", value.themes[value.selected]);
 
-// Apply to layout immediately whenever the replicant changes
-colorSelectorRep.on("change", (newValue) => {
-  switch (newValue) {
-    case "FINNRUNS":
-      Object.assign(LAYOUT_COLORS, FINNRUNS_COLORS);
-      break;
-    case "QUEST":
-      Object.assign(LAYOUT_COLORS, QUEST_COLORS);
-      break;
-  }
+  Object.assign(LAYOUT_COLORS, value.themes[value.selected]);
 
-  // Re-apply CSS variables immediately
+  console.log("LAYOUT_COLORS:", LAYOUT_COLORS);
+
   const root = document.documentElement;
   root.style.setProperty("--border-color", LAYOUT_COLORS.borderColor);
   root.style.setProperty("--bottom-gradient", LAYOUT_COLORS.bottomGradient);
   root.style.setProperty("--top-gradient", LAYOUT_COLORS.topGradient);
-
-  // Optional: trigger any other visual updates that read from LAYOUT_DEFS.colors
 });
 
 // ==============
@@ -386,15 +392,6 @@ if (LAYOUT_DEFS[layoutId]) {
   layout = {
     colors: LAYOUT_COLORS,
   };
-}
-
-// Apply CSS variables
-if (layout.colors) {
-  const root = document.documentElement;
-  const { colors } = layout;
-  root.style.setProperty("--border-color", colors.borderColor);
-  root.style.setProperty("--bottom-gradient", colors.bottomGradient);
-  root.style.setProperty("--top-gradient", colors.topGradient);
 }
 
 // Apply the layout areas to HTML elements

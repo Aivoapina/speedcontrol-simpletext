@@ -1,4 +1,5 @@
-const INCENTIVE_API_URL = "https://lahjoita.finnruns.fi/api/incentives?getActive=true";
+const INCENTIVE_API_URL =
+  "https://lahjoita.finnruns.fi/api/incentives?getActive=true";
 let incentives = [];
 
 const incentiveLayouts = {
@@ -41,7 +42,9 @@ function renderBidwar(root, incentive) {
     `;
 
   const options = incentive.incentiveValues ? incentive.incentiveValues : [];
-  const sortedOptions = [...options].sort((a, b) => b.amount - a.amount).slice(0, 9);
+  const sortedOptions = [...options]
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, 9);
   const maxAmount = Math.max(...sortedOptions.map((o) => o.amount));
 
   if (sortedOptions.length === 0) {
@@ -56,7 +59,6 @@ function renderBidwar(root, incentive) {
     root.appendChild(container);
     return;
   }
-
 
   sortedOptions.forEach((option, index) => {
     const container = document.createElement("div");
