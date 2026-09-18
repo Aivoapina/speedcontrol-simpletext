@@ -19,7 +19,7 @@ $(() => {
 			teamId = newVal.teams[playerNumber].id;
 	});
 
-	// Yoink racer finish times
+	// Grab and display the player's finish times
 	const player1Elem = document.getElementById("player1Time");
 	const player2Elem = document.getElementById("player2Time");
 
@@ -27,41 +27,21 @@ $(() => {
 		NodeCG.waitForReplicants(runDataActiveRun, timer).then(() => {
 			timer.on("change", () => {
 				const teams = runDataActiveRun.value?.teams;
-				if (!teams) return;
+				if (!teams || teams.length < 2) return;
 
-				// Clear old classes
 				player1Elem?.classList.remove("place_1", "place_2");
 				player2Elem?.classList.remove("place_1", "place_2");
 
-				if (player1Elem) {
-					const t1 = timer.value.teamFinishTimes[teams[0]?.id];
-					player1Elem.textContent = t1 ? t1.time : "";
+				const finished = Object.keys(timer.value.teamFinishTimes);
+				if (finished.length < 2) return;
+
+				if (finished[0] === teams[0].id) {
+					player1Elem?.classList.add("place_1");
+					player2Elem?.classList.add("place_2");
+				} else {
+					player2Elem?.classList.add("place_1");
+					player1Elem?.classList.add("place_2");
 				}
-
-				if (player2Elem) {
-					const t2 = timer.value.teamFinishTimes[teams[1]?.id];
-					player2Elem.textContent = t2 ? t2.time : "";
-				}
-
-				timer.on("change", () => {
-					const teams = runDataActiveRun.value?.teams;
-					if (!teams || teams.length < 2) return;
-
-					const finished = Object.keys(timer.value.teamFinishTimes);
-					if (finished.length < 2) return;
-
-					const team1Id = teams[0].id;
-					const team2Id = teams[1].id;
-
-					// Assign places
-					if (finished[0] === team1Id) {
-						player1Elem?.classList.add("place_1");
-						player2Elem?.classList.add("place_2");
-					} else {
-						player2Elem?.classList.add("place_1");
-						player1Elem?.classList.add("place_2");
-					}
-				});
 			});
 		});
 	}
