@@ -74,7 +74,6 @@ const LAYOUT_DEFS = Object.fromEntries(
 			width: layoutWidth,
 			height: layoutHeight,
 			bottomHeight: bottomBarHeight,
-			colors: LAYOUT_COLORS,
 		},
 	]),
 );
@@ -298,22 +297,22 @@ if (LAYOUT_DEFS[layoutId]) {
 	layout = resolveLayout(layoutId);
 } else {
 	// Bottom bar, overlays, misc graphics
-	layout = {
-		colors: LAYOUT_COLORS,
-	};
+	layout = {};
 }
 
 // Apply the layout areas to HTML elements
-Object.entries(layout.areas).forEach(([id, area]) => {
-	const el = document.getElementById(id);
-	if (!el) return;
+if (layout.areas) {
+	Object.entries(layout.areas).forEach(([id, area]) => {
+		const el = document.getElementById(id);
+		if (!el) return;
 
-	el.style.position = "absolute";
-	el.style.left = `${area.x}px`;
-	el.style.top = `${area.y}px`;
-	el.style.width = `${area.width}px`;
-	el.style.height = `${area.height}px`;
-});
+		el.style.position = "absolute";
+		el.style.left = `${area.x}px`;
+		el.style.top = `${area.y}px`;
+		el.style.width = `${area.width}px`;
+		el.style.height = `${area.height}px`;
+	});
+}
 
 import("./grid.js").then(({ createGrid }) => {
 	createGrid({
