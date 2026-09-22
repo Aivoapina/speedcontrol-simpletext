@@ -36,23 +36,16 @@ const layoutWidth = 1920;
 const layoutHeight = 1080;
 const bottomBarHeight = 72;
 
-const LAYOUT_COLORS = {};
 
 eventColorsRep.on("change", (value) => {
-	console.log("Replicant:", value);
 	if (!value) return;
 
-	console.log("Selected:", value.selected);
-	console.log("Theme:", value.themes[value.selected]);
-
-	Object.assign(LAYOUT_COLORS, value.themes[value.selected]);
-
-	console.log("LAYOUT_COLORS:", LAYOUT_COLORS);
-
+	const colors = value.themes[value.selected];
 	const root = document.documentElement;
-	root.style.setProperty("--border-color", LAYOUT_COLORS.borderColor);
-	root.style.setProperty("--bottom-gradient", LAYOUT_COLORS.bottomGradient);
-	root.style.setProperty("--top-gradient", LAYOUT_COLORS.topGradient);
+
+	root.style.setProperty("--border-color", colors.borderColor);
+	root.style.setProperty("--bottom-gradient", colors.bottomGradient);
+	root.style.setProperty("--top-gradient", colors.topGradient);
 });
 
 // ==============
