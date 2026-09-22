@@ -3,29 +3,29 @@
 // ==========
 
 const eventColorsRep = nodecg.Replicant("eventColors", {
-  defaultValue: {
-    selected: "FINNRUNS",
+	defaultValue: {
+		selected: "FINNRUNS",
 
-    themes: {
-      FINNRUNS: {
-        borderColor: "#2C7CB2",
-        bottomGradient: "#08426A",
-        topGradient: "#09558B",
-      },
+		themes: {
+			FINNRUNS: {
+				borderColor: "#2C7CB2",
+				bottomGradient: "#08426A",
+				topGradient: "#09558B",
+			},
 
-      QUEST: {
-        borderColor: "#23926C",
-        bottomGradient: "#17523C",
-        topGradient: "#097859",
-      },
+			QUEST: {
+				borderColor: "#23926C",
+				bottomGradient: "#17523C",
+				topGradient: "#097859",
+			},
 
-      RUSKA: {
-        borderColor: "#e2760a",
-        bottomGradient: "#9a4419",
-        topGradient: "#de5629",
-      },
-    },
-  },
+			RUSKA: {
+				borderColor: "#e2760a",
+				bottomGradient: "#9a4419",
+				topGradient: "#de5629",
+			},
+		},
+	},
 });
 
 // ==================
@@ -39,20 +39,20 @@ const bottomBarHeight = 72;
 const LAYOUT_COLORS = {};
 
 eventColorsRep.on("change", (value) => {
-  console.log("Replicant:", value);
-  if (!value) return;
+	console.log("Replicant:", value);
+	if (!value) return;
 
-  console.log("Selected:", value.selected);
-  console.log("Theme:", value.themes[value.selected]);
+	console.log("Selected:", value.selected);
+	console.log("Theme:", value.themes[value.selected]);
 
-  Object.assign(LAYOUT_COLORS, value.themes[value.selected]);
+	Object.assign(LAYOUT_COLORS, value.themes[value.selected]);
 
-  console.log("LAYOUT_COLORS:", LAYOUT_COLORS);
+	console.log("LAYOUT_COLORS:", LAYOUT_COLORS);
 
-  const root = document.documentElement;
-  root.style.setProperty("--border-color", LAYOUT_COLORS.borderColor);
-  root.style.setProperty("--bottom-gradient", LAYOUT_COLORS.bottomGradient);
-  root.style.setProperty("--top-gradient", LAYOUT_COLORS.topGradient);
+	const root = document.documentElement;
+	root.style.setProperty("--border-color", LAYOUT_COLORS.borderColor);
+	root.style.setProperty("--bottom-gradient", LAYOUT_COLORS.bottomGradient);
+	root.style.setProperty("--top-gradient", LAYOUT_COLORS.topGradient);
 });
 
 // ==============
@@ -63,316 +63,225 @@ eventColorsRep.on("change", (value) => {
 // When creating a new layout, copy an appropriate archetype and change the numbers as appropriate.
 // The rest of the areas automatically adjust based on the gameplay and camera areas' dimensions.
 
-const LAYOUT_DEFS = {
-  "16-9": {
-    archetype: "widescreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1408,
-    gameplayHeight: 792,
-    cameraHeight: 370,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-  "16-10": {
-    archetype: "widescreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1272,
-    gameplayHeight: 795,
-    cameraHeight: 370,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-  "16-9-race": {
-    archetype: "race",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 960,
-    gameplayHeight: 540,
-    cameraWidth: 700,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
+const response = await fetch("./js/layout-defs.json");
+const layoutData = await response.json();
 
-  "4-3": {
-    archetype: "tallscreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1344,
-    cameraHeight: 400,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  "10-9": {
-    archetype: "tallscreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1120,
-    cameraHeight: 450,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  "3-2": {
-    archetype: "widescreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1245,
-    gameplayHeight: 830,
-    cameraHeight: 380,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  "4-3-race": {
-    archetype: "race",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 960,
-    gameplayHeight: 720,
-    cameraWidth: 578,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  "3-2-race": {
-    archetype: "race",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 960,
-    gameplayHeight: 640,
-    cameraWidth: 578,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  nds: {
-    archetype: "nds",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1344,
-    gameplayHeight: 1008,
-    secondScreenHeight: 432,
-    cameraHeight: 360,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-  "5-4": {
-    archetype: "tallscreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1260,
-    cameraHeight: 400,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-};
+const LAYOUT_DEFS = Object.fromEntries(
+	Object.entries(layoutData).map(([id, def]) => [
+		id,
+		{
+			...def,
+			width: layoutWidth,
+			height: layoutHeight,
+			bottomHeight: bottomBarHeight,
+			colors: LAYOUT_COLORS,
+		},
+	]),
+);
 
 // ================
 // LAYOUT RESOLVERS
 // ================
 
 function resolveWidescreen(def) {
-  const leftColumnWidth = def.width - def.gameplayWidth;
-  const cameraArea = {
-    x: 0,
-    y: 0,
-    width: leftColumnWidth,
-    height: def.cameraHeight,
-  };
+	const leftColumnWidth = def.width - def.gameplayWidth;
+	const cameraArea = {
+		x: 0,
+		y: 0,
+		width: leftColumnWidth,
+		height: def.cameraHeight,
+	};
 
-  const sponsorArea = {
-    x: 0,
-    y: def.cameraHeight,
-    width: leftColumnWidth,
-    height: def.height - def.bottomHeight - def.cameraHeight,
-  };
+	const sponsorArea = {
+		x: 0,
+		y: def.cameraHeight,
+		width: leftColumnWidth,
+		height: def.height - def.bottomHeight - def.cameraHeight,
+	};
 
-  const gameplayArea = {
-    x: leftColumnWidth,
-    y: 0,
-    width: def.gameplayWidth,
-    height: def.gameplayHeight,
-  };
+	const gameplayArea = {
+		x: leftColumnWidth,
+		y: 0,
+		width: def.gameplayWidth,
+		height: def.gameplayHeight,
+	};
 
-  const runInfoArea = {
-    x: leftColumnWidth,
-    y: def.gameplayHeight,
-    width: def.gameplayWidth,
-    height: def.height - def.gameplayHeight - def.bottomHeight,
-  };
+	const runInfoArea = {
+		x: leftColumnWidth,
+		y: def.gameplayHeight,
+		width: def.gameplayWidth,
+		height: def.height - def.gameplayHeight - def.bottomHeight,
+	};
 
-  const bottomBarArea = {
-    x: 0,
-    y: def.height - def.bottomHeight,
-    width: def.width,
-    height: def.bottomHeight,
-  };
+	const bottomBarArea = {
+		x: 0,
+		y: def.height - def.bottomHeight,
+		width: def.width,
+		height: def.bottomHeight,
+	};
 
-  return {
-    ...def,
-    areas: {
-      camera: cameraArea,
-      sponsor: sponsorArea,
-      gameplay: gameplayArea,
-      runInfo: runInfoArea,
-      bottomBar: bottomBarArea,
-    },
-  };
+	return {
+		...def,
+		areas: {
+			camera: cameraArea,
+			sponsor: sponsorArea,
+			gameplay: gameplayArea,
+			runInfo: runInfoArea,
+			bottomBar: bottomBarArea,
+		},
+	};
 }
 
 function resolveTallscreen(def) {
-  const leftColumnWidth = def.width - def.gameplayWidth;
-  const cameraArea = {
-    x: 0,
-    y: 0,
-    width: leftColumnWidth,
-    height: def.cameraHeight,
-  };
+	const leftColumnWidth = def.width - def.gameplayWidth;
+	const cameraArea = {
+		x: 0,
+		y: 0,
+		width: leftColumnWidth,
+		height: def.cameraHeight,
+	};
 
-  const sponsorArea = {
-    x: 0,
-    y: def.cameraHeight,
-    width: leftColumnWidth,
-    height: def.height - def.bottomHeight - def.cameraHeight,
-  };
+	const sponsorArea = {
+		x: 0,
+		y: def.cameraHeight,
+		width: leftColumnWidth,
+		height: def.height - def.bottomHeight - def.cameraHeight,
+	};
 
-  const gameplayArea = {
-    x: leftColumnWidth,
-    y: 0,
-    width: def.gameplayWidth,
-    height: def.height - def.bottomHeight,
-  };
+	const gameplayArea = {
+		x: leftColumnWidth,
+		y: 0,
+		width: def.gameplayWidth,
+		height: def.height - def.bottomHeight,
+	};
 
-  const bottomBarArea = {
-    x: 0,
-    y: def.height - def.bottomHeight,
-    width: def.width,
-    height: def.bottomHeight,
-  };
+	const bottomBarArea = {
+		x: 0,
+		y: def.height - def.bottomHeight,
+		width: def.width,
+		height: def.bottomHeight,
+	};
 
-  return {
-    ...def,
-    areas: {
-      camera: cameraArea,
-      sponsor: sponsorArea,
-      gameplay: gameplayArea,
-      bottomBar: bottomBarArea,
-    },
-  };
+	return {
+		...def,
+		areas: {
+			camera: cameraArea,
+			sponsor: sponsorArea,
+			gameplay: gameplayArea,
+			bottomBar: bottomBarArea,
+		},
+	};
 }
 
 function resolveNDS(def) {
-  const leftColumnWidth = def.width - def.gameplayWidth;
-  const cameraArea = {
-    x: 0,
-    y: 0,
-    width: leftColumnWidth,
-    height: def.cameraHeight,
-  };
+	const leftColumnWidth = def.width - def.gameplayWidth;
+	const cameraArea = {
+		x: 0,
+		y: 0,
+		width: leftColumnWidth,
+		height: def.cameraHeight,
+	};
 
-  const sponsorArea = {
-    x: 0,
-    y: def.cameraHeight,
-    width: leftColumnWidth,
-    height:
-      def.height - def.bottomHeight - def.cameraHeight - def.secondScreenHeight,
-  };
+	const sponsorArea = {
+		x: 0,
+		y: def.cameraHeight,
+		width: leftColumnWidth,
+		height:
+			def.height - def.bottomHeight - def.cameraHeight - def.secondScreenHeight,
+	};
 
-  const secondScreenArea = {
-    x: 0,
-    y: sponsorArea.height + def.cameraHeight,
-    width: leftColumnWidth,
-    height: def.secondScreenHeight,
-  };
+	const secondScreenArea = {
+		x: 0,
+		y: sponsorArea.height + def.cameraHeight,
+		width: leftColumnWidth,
+		height: def.secondScreenHeight,
+	};
 
-  const gameplayArea = {
-    x: leftColumnWidth,
-    y: 0,
-    width: def.gameplayWidth,
-    height: def.height - def.bottomHeight,
-  };
+	const gameplayArea = {
+		x: leftColumnWidth,
+		y: 0,
+		width: def.gameplayWidth,
+		height: def.height - def.bottomHeight,
+	};
 
-  const bottomBarArea = {
-    x: 0,
-    y: def.height - def.bottomHeight,
-    width: def.width,
-    height: def.bottomHeight,
-  };
+	const bottomBarArea = {
+		x: 0,
+		y: def.height - def.bottomHeight,
+		width: def.width,
+		height: def.bottomHeight,
+	};
 
-  return {
-    ...def,
-    areas: {
-      camera: cameraArea,
-      sponsor: sponsorArea,
-      gameplay: gameplayArea,
-      secondScreen: secondScreenArea,
-      bottomBar: bottomBarArea,
-    },
-  };
+	return {
+		...def,
+		areas: {
+			camera: cameraArea,
+			sponsor: sponsorArea,
+			gameplay: gameplayArea,
+			secondScreen: secondScreenArea,
+			bottomBar: bottomBarArea,
+		},
+	};
 }
 
 function resolveRace(def) {
-  const infoRowHeight = def.height - def.gameplayHeight - def.bottomHeight;
+	const infoRowHeight = def.height - def.gameplayHeight - def.bottomHeight;
 
-  const leftGameplayArea = {
-    x: 0,
-    y: 0,
-    width: def.gameplayWidth,
-    height: def.gameplayHeight,
-  };
+	const leftGameplayArea = {
+		x: 0,
+		y: 0,
+		width: def.gameplayWidth,
+		height: def.gameplayHeight,
+	};
 
-  const rightGameplayArea = {
-    x: def.gameplayWidth,
-    y: 0,
-    width: def.gameplayWidth,
-    height: def.gameplayHeight,
-  };
+	const rightGameplayArea = {
+		x: def.gameplayWidth,
+		y: 0,
+		width: def.gameplayWidth,
+		height: def.gameplayHeight,
+	};
 
-  const cameraX = (def.width - def.cameraWidth) / 2;
-  const sideWidth = (def.width - def.cameraWidth) / 2;
+	const cameraX = (def.width - def.cameraWidth) / 2;
+	const sideWidth = (def.width - def.cameraWidth) / 2;
 
-  const cameraArea = {
-    x: cameraX,
-    y: def.gameplayHeight,
-    width: def.cameraWidth,
-    height: infoRowHeight,
-  };
+	const cameraArea = {
+		x: cameraX,
+		y: def.gameplayHeight,
+		width: def.cameraWidth,
+		height: infoRowHeight,
+	};
 
-  const sponsorArea = {
-    x: 0,
-    y: def.gameplayHeight,
-    width: sideWidth,
-    height: infoRowHeight,
-  };
+	const sponsorArea = {
+		x: 0,
+		y: def.gameplayHeight,
+		width: sideWidth,
+		height: infoRowHeight,
+	};
 
-  const runInfoArea = {
-    x: cameraX + def.cameraWidth,
-    y: def.gameplayHeight,
-    width: sideWidth,
-    height: infoRowHeight,
-  };
+	const runInfoArea = {
+		x: cameraX + def.cameraWidth,
+		y: def.gameplayHeight,
+		width: sideWidth,
+		height: infoRowHeight,
+	};
 
-  const bottomBarArea = {
-    x: 0,
-    y: def.height - def.bottomHeight,
-    width: def.width,
-    height: def.bottomHeight,
-  };
+	const bottomBarArea = {
+		x: 0,
+		y: def.height - def.bottomHeight,
+		width: def.width,
+		height: def.bottomHeight,
+	};
 
-  return {
-    ...def,
-    areas: {
-      gameplayLeft: leftGameplayArea,
-      gameplayRight: rightGameplayArea,
-      sponsor: sponsorArea,
-      camera: cameraArea,
-      runInfo: runInfoArea,
-      bottomBar: bottomBarArea,
-    },
-  };
+	return {
+		...def,
+		areas: {
+			gameplayLeft: leftGameplayArea,
+			gameplayRight: rightGameplayArea,
+			sponsor: sponsorArea,
+			camera: cameraArea,
+			runInfo: runInfoArea,
+			bottomBar: bottomBarArea,
+		},
+	};
 }
 
 // ================
@@ -386,31 +295,31 @@ const layoutId = fileName.replace(".html", "");
 let layout;
 
 if (LAYOUT_DEFS[layoutId]) {
-  layout = resolveLayout(layoutId);
+	layout = resolveLayout(layoutId);
 } else {
-  // Bottom bar, overlays, misc graphics
-  layout = {
-    colors: LAYOUT_COLORS,
-  };
+	// Bottom bar, overlays, misc graphics
+	layout = {
+		colors: LAYOUT_COLORS,
+	};
 }
 
 // Apply the layout areas to HTML elements
 Object.entries(layout.areas).forEach(([id, area]) => {
-  const el = document.getElementById(id);
-  if (!el) return;
+	const el = document.getElementById(id);
+	if (!el) return;
 
-  el.style.position = "absolute";
-  el.style.left = `${area.x}px`;
-  el.style.top = `${area.y}px`;
-  el.style.width = `${area.width}px`;
-  el.style.height = `${area.height}px`;
+	el.style.position = "absolute";
+	el.style.left = `${area.x}px`;
+	el.style.top = `${area.y}px`;
+	el.style.width = `${area.width}px`;
+	el.style.height = `${area.height}px`;
 });
 
 import("./grid.js").then(({ createGrid }) => {
-  createGrid({
-    squareSize: 22,
-    layout,
-  });
+	createGrid({
+		squareSize: 22,
+		layout,
+	});
 });
 
 // ==========
@@ -418,26 +327,26 @@ import("./grid.js").then(({ createGrid }) => {
 // ==========
 
 export function resolveLayout(layoutId) {
-  const def = LAYOUT_DEFS[layoutId];
+	const def = LAYOUT_DEFS[layoutId];
 
-  if (!def) {
-    throw new Error(`Unknown layout ID: ${layoutId}`);
-  }
+	if (!def) {
+		throw new Error(`Unknown layout ID: ${layoutId}`);
+	}
 
-  switch (def.archetype) {
-    case "widescreen":
-      return resolveWidescreen(def);
+	switch (def.archetype) {
+		case "widescreen":
+			return resolveWidescreen(def);
 
-    case "tallscreen":
-      return resolveTallscreen(def);
+		case "tallscreen":
+			return resolveTallscreen(def);
 
-    case "nds":
-      return resolveNDS(def);
+		case "nds":
+			return resolveNDS(def);
 
-    case "race":
-      return resolveRace(def);
+		case "race":
+			return resolveRace(def);
 
-    default:
-      throw new Error(`Unknown archetype: ${def.archetype}`);
-  }
+		default:
+			throw new Error(`Unknown archetype: ${def.archetype}`);
+	}
 }
