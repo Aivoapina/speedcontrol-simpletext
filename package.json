@@ -56,9 +56,10 @@
       },
       {
         "name": "Interview Controls",
-        "title": "Interview Controls",
+        "title": "🎤 Interview Controls",
         "width": 3,
-        "file": "interviewcontrols.html"
+        "file": "interviewcontrols.html",
+        "headerColor": "#121421"
       }
     ],
     "graphics": [
