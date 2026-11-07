@@ -1,73 +1,75 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="css/common.css" />
-    <style>
-      #textCarouselText {
-        width: 100%;
-      }
-    </style>
-  </head>
 
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    #textCarouselText {
+      width: 95%;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <label for="textCarouselText">
+      Alapalkin tekstit. Erottele rivit ;-merkillä
+    </label>
+    <textarea id="textCarouselText" type="text" rows="6"> </textarea>
+    <button id="setTextCarousel">Aseta</button>
+
     <div>
-      <label for="textCarouselText">
-        Alapalkin tekstit. Erottele rivit ;-merkillä
+      <label for="scheduleAdjustment">
+        Aikataulun säätö minuutteina (positiivinen edellä, negatiivinen
+        jäljessä)
       </label>
-      <textarea id="textCarouselText" type="text" rows="6"> </textarea>
-      <button id="setTextCarousel">Aseta</button>
-
-      <div>
-        <label for="scheduleAdjustment">
-          Aikataulun säätö minuutteina (positiivinen edellä, negatiivinen
-          jäljessä)
-        </label>
-        <input id="scheduleAdjustment" type="number" />
-        <button id="setScheduleAdjustment">Aseta</button>
-      </div>
+      <input id="scheduleAdjustment" type="number" />
+      <button id="setScheduleAdjustment">Aseta</button>
     </div>
-    <script>
-      const speedcontrolBundle = "nodecg-speedcontrol";
+  </div>
+  <script>
+    const speedcontrolBundle = "nodecg-speedcontrol";
 
-      const textCarouselTextElem = document.getElementById("textCarouselText");
-      const setTextCarouselButton = document.getElementById("setTextCarousel");
+    const textCarouselTextElem = document.getElementById("textCarouselText");
+    const setTextCarouselButton = document.getElementById("setTextCarousel");
 
-      const scheduleAdjustmentElem =
-        document.getElementById("scheduleAdjustment");
-      const setScheduleAdjustmentButton = document.getElementById(
-        "setScheduleAdjustment",
-      );
+    const scheduleAdjustmentElem =
+      document.getElementById("scheduleAdjustment");
+    const setScheduleAdjustmentButton = document.getElementById(
+      "setScheduleAdjustment",
+    );
 
-      const textCarouselReplicant = nodecg.Replicant(
-        "textCarousel",
-        speedcontrolBundle,
-      );
-      const scheduleAdjustmentReplicant = nodecg.Replicant(
-        "scheduleAdjustment",
-        speedcontrolBundle,
-      );
+    const textCarouselReplicant = nodecg.Replicant(
+      "textCarousel",
+      speedcontrolBundle,
+    );
+    const scheduleAdjustmentReplicant = nodecg.Replicant(
+      "scheduleAdjustment",
+      speedcontrolBundle,
+    );
 
-      NodeCG.waitForReplicants(
-        textCarouselReplicant,
-        scheduleAdjustmentReplicant,
-      ).then(() => {
-        textCarouselReplicant.on("change", (text) => {
-          textCarouselTextElem.value = text;
-        });
-
-        scheduleAdjustmentReplicant.on("change", (value) => {
-          scheduleAdjustmentElem.value = value;
-        });
-
-        setTextCarouselButton.addEventListener("click", () => {
-          textCarouselReplicant.value = textCarouselTextElem.value;
-        });
-
-        setScheduleAdjustmentButton.addEventListener("click", () => {
-          scheduleAdjustmentReplicant.value = scheduleAdjustmentElem.value;
-        });
+    NodeCG.waitForReplicants(
+      textCarouselReplicant,
+      scheduleAdjustmentReplicant,
+    ).then(() => {
+      textCarouselReplicant.on("change", (text) => {
+        textCarouselTextElem.value = text;
       });
-    </script>
-  </body>
+
+      scheduleAdjustmentReplicant.on("change", (value) => {
+        scheduleAdjustmentElem.value = value;
+      });
+
+      setTextCarouselButton.addEventListener("click", () => {
+        textCarouselReplicant.value = textCarouselTextElem.value;
+      });
+
+      setScheduleAdjustmentButton.addEventListener("click", () => {
+        scheduleAdjustmentReplicant.value = scheduleAdjustmentElem.value;
+      });
+    });
+  </script>
+</body>
+
 </html>

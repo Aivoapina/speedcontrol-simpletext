@@ -36,11 +36,13 @@ button:active,
   background-color: #34559e;
 }
 
-/* select,
-input {
+select,
+input,
+textarea {
   padding: 10px;
   color: white;
-  background-color: #272727;
+  background-color: #3f495c;
   border: none;
+  border-bottom: 1px solid rgb(182, 182, 182);
   margin: 2px;
-} */
+}
