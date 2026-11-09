@@ -33,6 +33,10 @@
   border-left: var(--border-width) var(--border-style) var(--border-color);
 }
 
+#camera {
+  align-items: flex-start;
+}
+
 #player1Time,
 #player2Time {
   position: absolute;

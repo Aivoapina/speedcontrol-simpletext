@@ -36,7 +36,7 @@
       },
       {
         "name": "Commentators",
-        "title": "Commentators",
+        "title": "Kommentaattorit",
         "width": 3,
         "file": "commentators.html"
       },
@@ -56,9 +56,10 @@
       },
       {
         "name": "Interview Controls",
-        "title": "Interview Controls",
+        "title": "🎤 Haastattelut",
         "width": 3,
-        "file": "interviewcontrols.html"
+        "file": "interviewcontrols.html",
+        "headerColor": "#456468"
       }
     ],
     "graphics": [

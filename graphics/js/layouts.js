@@ -36,23 +36,15 @@ const layoutWidth = 1920;
 const layoutHeight = 1080;
 const bottomBarHeight = 72;
 
-const LAYOUT_COLORS = {};
-
 eventColorsRep.on("change", (value) => {
-  console.log("Replicant:", value);
   if (!value) return;
 
-  console.log("Selected:", value.selected);
-  console.log("Theme:", value.themes[value.selected]);
-
-  Object.assign(LAYOUT_COLORS, value.themes[value.selected]);
-
-  console.log("LAYOUT_COLORS:", LAYOUT_COLORS);
-
+  const colors = value.themes[value.selected];
   const root = document.documentElement;
-  root.style.setProperty("--border-color", LAYOUT_COLORS.borderColor);
-  root.style.setProperty("--bottom-gradient", LAYOUT_COLORS.bottomGradient);
-  root.style.setProperty("--top-gradient", LAYOUT_COLORS.topGradient);
+
+  root.style.setProperty("--border-color", colors.borderColor);
+  root.style.setProperty("--bottom-gradient", colors.bottomGradient);
+  root.style.setProperty("--top-gradient", colors.topGradient);
 });
 
 // ==============
@@ -63,112 +55,20 @@ eventColorsRep.on("change", (value) => {
 // When creating a new layout, copy an appropriate archetype and change the numbers as appropriate.
 // The rest of the areas automatically adjust based on the gameplay and camera areas' dimensions.
 
-const LAYOUT_DEFS = {
-  "16-9": {
-    archetype: "widescreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1408,
-    gameplayHeight: 792,
-    cameraHeight: 370,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-  "16-10": {
-    archetype: "widescreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1272,
-    gameplayHeight: 795,
-    cameraHeight: 370,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-  "16-9-race": {
-    archetype: "race",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 960,
-    gameplayHeight: 540,
-    cameraWidth: 700,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
+const response = await fetch("./js/layout-defs.json");
+const layoutData = await response.json();
 
-  "4-3": {
-    archetype: "tallscreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1344,
-    cameraHeight: 400,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  "10-9": {
-    archetype: "tallscreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1120,
-    cameraHeight: 450,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  "3-2": {
-    archetype: "widescreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1245,
-    gameplayHeight: 830,
-    cameraHeight: 380,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  "4-3-race": {
-    archetype: "race",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 960,
-    gameplayHeight: 720,
-    cameraWidth: 578,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  "3-2-race": {
-    archetype: "race",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 960,
-    gameplayHeight: 640,
-    cameraWidth: 578,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-
-  nds: {
-    archetype: "nds",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1344,
-    gameplayHeight: 1008,
-    secondScreenHeight: 432,
-    cameraHeight: 360,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-  "5-4": {
-    archetype: "tallscreen",
-    width: layoutWidth,
-    height: layoutHeight,
-    gameplayWidth: 1260,
-    cameraHeight: 400,
-    bottomHeight: bottomBarHeight,
-    colors: LAYOUT_COLORS,
-  },
-};
+const LAYOUT_DEFS = Object.fromEntries(
+  Object.entries(layoutData).map(([id, def]) => [
+    id,
+    {
+      ...def,
+      width: layoutWidth,
+      height: layoutHeight,
+      bottomHeight: bottomBarHeight,
+    },
+  ]),
+);
 
 // ================
 // LAYOUT RESOLVERS
@@ -389,22 +289,22 @@ if (LAYOUT_DEFS[layoutId]) {
   layout = resolveLayout(layoutId);
 } else {
   // Bottom bar, overlays, misc graphics
-  layout = {
-    colors: LAYOUT_COLORS,
-  };
+  layout = {};
 }
 
 // Apply the layout areas to HTML elements
-Object.entries(layout.areas).forEach(([id, area]) => {
-  const el = document.getElementById(id);
-  if (!el) return;
+if (layout.areas) {
+  Object.entries(layout.areas).forEach(([id, area]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
 
-  el.style.position = "absolute";
-  el.style.left = `${area.x}px`;
-  el.style.top = `${area.y}px`;
-  el.style.width = `${area.width}px`;
-  el.style.height = `${area.height}px`;
-});
+    el.style.position = "absolute";
+    el.style.left = `${area.x}px`;
+    el.style.top = `${area.y}px`;
+    el.style.width = `${area.width}px`;
+    el.style.height = `${area.height}px`;
+  });
+}
 
 import("./grid.js").then(({ createGrid }) => {
   createGrid({

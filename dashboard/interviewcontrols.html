@@ -8,31 +8,31 @@
         display: flex;
       }
 
-      .container select,
-      .container input {
+      input,
+      select {
+        width: 50%;
         flex-grow: 1;
       }
     </style>
   </head>
 
   <body>
-    <div>
-      <div class="container">
-        <select id="interview-left-person"></select>
-        <select id="interview-right-person"></select>
-      </div>
-      <div class="container">
-        <input id="interview-left-description" placeholder="Kuvaus" />
-        <input id="interview-right-description" placeholder="Kuvaus" />
-      </div>
-      <button id="setInterviewData">Aseta Haastattelu</button>
-      <br />
-      <div>
-        <label for="newInterviewPerson">Lisää henkilö:</label>
-        <input id="newInterviewPerson" type="text" />
-      </div>
-      <button id="addInterviewPerson">Lisää</button>
+    <div class="container">
+      <select id="interview-left-person"></select>
+      <select id="interview-right-person"></select>
     </div>
+    <div class="container">
+      <input id="interview-left-description" placeholder="Kuvaus" />
+      <input id="interview-right-description" placeholder="Kuvaus" />
+    </div>
+
+    <button id="setInterviewData">Aseta Haastattelu</button>
+    <br />
+    <div>
+      <label for="newInterviewPerson">Lisää henkilö:</label>
+      <input id="newInterviewPerson" type="text" />
+    </div>
+    <button id="addInterviewPerson">Lisää</button>
 
     <script>
       const speedcontrolBundle = "nodecg-speedcontrol";
