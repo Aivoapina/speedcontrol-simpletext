@@ -244,6 +244,7 @@ $(() => {
       // speedcontrol has the ability to have multiple players in a team,
       // but for here we'll just return the 1st one.
 
+      // Note: Twitch name cycling has been commented out for now
       if (playerCycle == 0) {
         showPlayerName(player, team.players[0]);
         showPlayerName(player1, runData.teams[0].players[0]);
