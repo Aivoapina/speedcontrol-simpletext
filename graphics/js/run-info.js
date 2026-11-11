@@ -23,6 +23,13 @@ $(() => {
   let nextGame;
   let texts = [];
 
+  let commentatorNames = {
+    left: "",
+    right: "",
+  };
+
+  let selectedPlayerPosition = "playerPositionCenter";
+
   // replicants
   const runDataActiveRun = nodecg.Replicant(
     "runDataActiveRun",
@@ -36,6 +43,7 @@ $(() => {
   const donateStatus = nodecg.Replicant("donateStatus", speedcontrolBundle);
   const commentators = nodecg.Replicant("commentators", speedcontrolBundle);
   const producer = nodecg.Replicant("producer", speedcontrolBundle);
+  const playerPosition = nodecg.Replicant("playerPosition");
 
   const textCarouselReplicant = nodecg.Replicant(
     "textCarousel",
@@ -52,26 +60,58 @@ $(() => {
     if (newVal) updateSceneFields(newVal);
   });
 
-  function setCommentator(elem, value) {
-    elem.innerHTML = value
-      ? `<i class="fa-solid fa-sharp fa-headset"></i> ${value}`
-      : "";
-    elem.classList.toggle("no_display", !value);
+  const cleanName = (value) =>
+    typeof value === "string" ? value.trim() : "";
+
+  function renderNameSlots() {
+    const slots = ["nameSlotLeft", "nameSlotCenter", "nameSlotRight"]
+      .map(id => document.getElementById(id));
+
+    const playerIndex = {
+      playerPositionLeft: 0,
+      playerPositionCenter: 1,
+      playerPositionRight: 2,
+    }[selectedPlayerPosition] ?? 1;
+
+    let commentatorIndex = 0;
+
+    slots.forEach((slot, index) => {
+      if (!slot || !player.length) return;
+
+      slot.replaceChildren();
+
+      const name = index === playerIndex
+        ? ""
+        : [commentatorNames.left, commentatorNames.right][commentatorIndex++];
+
+      if (index === playerIndex) {
+        slot.append(player[0]);
+      } else if (name) {
+        slot.innerHTML = `<i class="fa-solid fa-sharp fa-headset"></i> ${name}`;
+      }
+
+      slot.classList.toggle("no_display", !slot.textContent.trim());
+    });
   }
 
   commentators.on("change", (newVal) => {
-    const leftElem = document.getElementById("commentatorLeft");
-    const rightElem = document.getElementById("commentatorRight");
+    commentatorNames = {
+      left: cleanName(newVal?.left),
+      right: cleanName(newVal?.right),
+    };
+
+    renderNameSlots();
 
     if (newVal) {
-      setCommentator(leftElem, newVal.left);
-      setCommentator(rightElem, newVal.right);
       hostContainer.css("flex-direction", "");
     } else {
-      setCommentator(leftElem, null);
-      setCommentator(rightElem, null);
       hostContainer.css("flex-direction", "column-reverse");
     }
+  });
+
+  playerPosition.on("change", (newVal) => {
+    selectedPlayerPosition = newVal;
+    renderNameSlots();
   });
 
   producer.on("change", (newVal) => {
@@ -208,38 +248,45 @@ $(() => {
         showPlayerName(player, team.players[0]);
         showPlayerName(player1, runData.teams[0].players[0]);
         showPlayerName(player2, runData.teams[1].players[0]);
-      } else if (playerCycle == 1) {
-        if (team.players[0]?.social?.twitch) {
-          showPlayerTwitch(player, team.players[0]);
-        }
-        if (runData.teams[0].players[0]?.social?.twitch) {
-          showPlayerTwitch(player1, runData.teams[0].players[0]);
-        }
-        if (runData.teams[1].players[0]?.social?.twitch) {
-          showPlayerTwitch(player2, runData.teams[1].players[0]);
-        }
-      }
+      } // else if (playerCycle == 1) {
+      // if (team.players[0]?.social?.twitch) {
+      //   showPlayerTwitch(player, team.players[0]);
+      // }
+      // if (runData.teams[0].players[0]?.social?.twitch) {
+      //   showPlayerTwitch(player1, runData.teams[0].players[0]);
+      // }
+      // if (runData.teams[1].players[0]?.social?.twitch) {
+      //   showPlayerTwitch(player2, runData.teams[1].players[0]);
+      // }
+      // }
     }
   };
 
   const showPlayerName = (elem, play) => {
-    const newContent = `<i class="fa-solid fa-sharp fa-running"></i> ${play.name}`;
-    if (elem.html() === newContent) return;
+    const newContent = play?.name
+      ? `<i class="fa-solid fa-sharp fa-running"></i> ${play.name}`
+      : "";
+
+    if (elem.html() === newContent) {
+      renderNameSlots();
+      return;
+    }
 
     elem.addClass("hide");
+
     setTimeout(() => {
       elem.html(newContent);
       elem.removeClass("hide");
+      renderNameSlots();
     }, 1000);
   };
-
-  const showPlayerTwitch = (elem, play) => {
-    elem.addClass("hide");
-    setTimeout(() => {
-      elem.html(`<i class="fa-brands fa-twitch"></i> ${play.social.twitch}`);
-      elem.removeClass("hide");
-    }, 1000);
-  };
+  // const showPlayerTwitch = (elem, play) => {
+  //   elem.addClass("hide");
+  //   setTimeout(() => {
+  //     elem.html(`<i class="fa-brands fa-twitch"></i> ${play.social.twitch}`);
+  //     elem.removeClass("hide");
+  //   }, 1000);
+  // };
 
   setInterval(sceneUpdater, 15000);
   setInterval(textCarouselUpdater, 25000);
