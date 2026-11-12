@@ -1,143 +1,197 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="css/common.css" />
-    <style>
-      select {
-        width: 100%;
-        margin-bottom: 16px;
-      }
-      .color-grid {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-        align-items: center;
-      }
-      .color-grid label {
-        font-weight: bold;
-      }
-      input[type="color"] {
-        width: 60px;
-        height: 32px;
-        padding: 0;
-        border: none;
-        background: none;
-        cursor: pointer;
-      }
-      .save-button {
-        margin-top: 20px;
-        width: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Väriteema</h1>
-    <select id="themeSelect">
-      <option value="FINNRUNS">FINNRUNS</option>
-      <option value="QUEST">FINNRUNS QUEST</option>
-      <option value="RUSKA">FINNRUNS RUSKA</option>
-    </select>
-    <div class="color-grid">
-      <label for="borderColor">Border Color</label>
-      <input type="color" id="borderColor" />
-      <label for="bottomGradient">Bottom Gradient</label>
-      <input type="color" id="bottomGradient" />
-      <label for="topGradient">Top Gradient</label>
-      <input type="color" id="topGradient" />
-      <button id="resetButton">Reset to defaults</button>
-    </div>
-    <script>
-      const eventColorsRep = nodecg.Replicant("eventColors", {
-        defaultValue: {
-          selected: "FINNRUNS",
 
-          themes: {
-            FINNRUNS: {
-              borderColor: "#2C7CB2",
-              bottomGradient: "#08426A",
-              topGradient: "#09558B",
-            },
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    select {
+      width: 100%;
+      margin-bottom: 16px;
+    }
 
-            QUEST: {
-              borderColor: "#23926C",
-              bottomGradient: "#17523C",
-              topGradient: "#097859",
-            },
+    .color-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
 
-            RUSKA: {
-              borderColor: "#e2760a",
-              bottomGradient: "#9a4419",
-              topGradient: "#de5629",
-            },
+    .color-grid label {
+      font-weight: bold;
+    }
+
+    input[type="color"] {
+      width: 60px;
+      height: 32px;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    .save-button {
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    #clearCommentators {
+      background: rgb(134, 16, 16);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Väriteema</h1>
+  <select id="themeSelect">
+    <option value="FINNRUNS">FINNRUNS</option>
+    <option value="QUEST">FINNRUNS QUEST</option>
+    <option value="RUSKA">FINNRUNS RUSKA</option>
+  </select>
+  <div class="color-grid">
+    <label for="borderColor">Border Color</label>
+    <input type="color" id="borderColor" />
+    <label for="bottomGradient">Bottom Gradient</label>
+    <input type="color" id="bottomGradient" />
+    <label for="topGradient">Top Gradient</label>
+    <input type="color" id="topGradient" />
+    <button id="resetButton">Reset to defaults</button>
+  </div>
+
+  <h1>Nimilista</h1>
+  <div>
+    <label for="newCommentator">Lisää nimi listaan:</label>
+    <input id="newCommentator" type="text" />
+  </div>
+  <button id="addCommentator">Lisää</button>
+  <div>
+    <button id="clearCommentators">Tyhjennä nimilista</button>
+  </div>
+  <script>
+    const eventColorsRep = nodecg.Replicant("eventColors", {
+      defaultValue: {
+        selected: "FINNRUNS",
+
+        themes: {
+          FINNRUNS: {
+            borderColor: "#2C7CB2",
+            bottomGradient: "#08426A",
+            topGradient: "#09558B",
+          },
+
+          QUEST: {
+            borderColor: "#23926C",
+            bottomGradient: "#17523C",
+            topGradient: "#097859",
+          },
+
+          RUSKA: {
+            borderColor: "#e2760a",
+            bottomGradient: "#9a4419",
+            topGradient: "#de5629",
           },
         },
-      });
+      },
+    });
 
-      const DEFAULT_THEMES = {
-        FINNRUNS: {
-          borderColor: "#2C7CB2",
-          bottomGradient: "#08426A",
-          topGradient: "#09558B",
-        },
-        QUEST: {
-          borderColor: "#23926C",
-          bottomGradient: "#17523C",
-          topGradient: "#097859",
-        },
-        RUSKA: {
-          borderColor: "#e2760a",
-          bottomGradient: "#9a4419",
-          topGradient: "#de5629",
-        },
+    const DEFAULT_THEMES = {
+      FINNRUNS: {
+        borderColor: "#2C7CB2",
+        bottomGradient: "#08426A",
+        topGradient: "#09558B",
+      },
+      QUEST: {
+        borderColor: "#23926C",
+        bottomGradient: "#17523C",
+        topGradient: "#097859",
+      },
+      RUSKA: {
+        borderColor: "#e2760a",
+        bottomGradient: "#9a4419",
+        topGradient: "#de5629",
+      },
+    };
+
+    const borderColor = document.getElementById("borderColor");
+    const bottomGradient = document.getElementById("bottomGradient");
+    const topGradient = document.getElementById("topGradient");
+    const resetButton = document.getElementById("resetButton");
+
+    const select = document.getElementById("themeSelect");
+
+    eventColorsRep.on("change", (value) => {
+      if (!value) return;
+
+      select.value = value.selected;
+
+      const theme = value.themes[value.selected];
+
+      borderColor.value = theme.borderColor;
+      bottomGradient.value = theme.bottomGradient;
+      topGradient.value = theme.topGradient;
+    });
+
+    function saveCurrentTheme() {
+      const theme =
+        eventColorsRep.value.themes[eventColorsRep.value.selected];
+
+      theme.borderColor = borderColor.value;
+      theme.bottomGradient = bottomGradient.value;
+      theme.topGradient = topGradient.value;
+    }
+
+    borderColor.addEventListener("input", saveCurrentTheme);
+    bottomGradient.addEventListener("input", saveCurrentTheme);
+    topGradient.addEventListener("input", saveCurrentTheme);
+
+    resetButton.addEventListener("click", () => {
+      const selected = eventColorsRep.value.selected;
+
+      Object.assign(
+        eventColorsRep.value.themes[selected],
+        DEFAULT_THEMES[selected],
+      );
+    });
+
+    select.addEventListener("change", () => {
+      if (!eventColorsRep.value) return;
+
+      eventColorsRep.value.selected = select.value;
+    });
+
+    const speedcontrolBundle = "nodecg-speedcontrol";
+
+    const allCommentators = nodecg.Replicant(
+      "allCommentators",
+      speedcontrolBundle,
+    );
+
+
+    // Commentator list manipulation
+
+    const addCommentatorButton = document.getElementById("addCommentator");
+    const clearCommentatorsButton = document.getElementById("clearCommentators");
+
+    NodeCG.waitForReplicants(allCommentators).then(() => {
+      addCommentatorButton.onclick = () => {
+        const newCommentator = document.getElementById("newCommentator");
+        const name = newCommentator.value.trim();
+
+        if (!name || allCommentators.value.includes(name)) return;
+
+        allCommentators.value = [...allCommentators.value, name];
+
+        newCommentator.value = "";
       };
+    });
 
-      const borderColor = document.getElementById("borderColor");
-      const bottomGradient = document.getElementById("bottomGradient");
-      const topGradient = document.getElementById("topGradient");
-      const resetButton = document.getElementById("resetButton");
-
-      const select = document.getElementById("themeSelect");
-
-      eventColorsRep.on("change", (value) => {
-        if (!value) return;
-
-        select.value = value.selected;
-
-        const theme = value.themes[value.selected];
-
-        borderColor.value = theme.borderColor;
-        bottomGradient.value = theme.bottomGradient;
-        topGradient.value = theme.topGradient;
-      });
-
-      function saveCurrentTheme() {
-        const theme =
-          eventColorsRep.value.themes[eventColorsRep.value.selected];
-
-        theme.borderColor = borderColor.value;
-        theme.bottomGradient = bottomGradient.value;
-        theme.topGradient = topGradient.value;
+    clearCommentatorsButton.onclick = () => {
+      if (confirm("Oletko ihan täysin varma että haluat tyhjentää koko nimilistan? Jos tapahtuma on käynnissä, peruuta tämä toiminto.")) {
+        allCommentators.value = [];
       }
+    };
 
-      borderColor.addEventListener("input", saveCurrentTheme);
-      bottomGradient.addEventListener("input", saveCurrentTheme);
-      topGradient.addEventListener("input", saveCurrentTheme);
+  </script>
+</body>
 
-      resetButton.addEventListener("click", () => {
-        const selected = eventColorsRep.value.selected;
-
-        Object.assign(
-          eventColorsRep.value.themes[selected],
-          DEFAULT_THEMES[selected],
-        );
-      });
-
-      select.addEventListener("change", () => {
-        if (!eventColorsRep.value) return;
-
-        eventColorsRep.value.selected = select.value;
-      });
-    </script>
-  </body>
 </html>

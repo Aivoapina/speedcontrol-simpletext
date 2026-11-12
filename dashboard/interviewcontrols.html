@@ -1,148 +1,133 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="css/common.css" />
-    <style>
-      .container {
-        display: flex;
-      }
 
-      input,
-      select {
-        width: 50%;
-        flex-grow: 1;
-      }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    .container {
+      display: flex;
+    }
 
-  <body>
-    <div class="container">
-      <select id="interview-left-person"></select>
-      <select id="interview-right-person"></select>
-    </div>
-    <div class="container">
-      <input id="interview-left-description" placeholder="Kuvaus" />
-      <input id="interview-right-description" placeholder="Kuvaus" />
-    </div>
+    input,
+    select {
+      width: 50%;
+      flex-grow: 1;
+    }
+  </style>
+</head>
 
-    <button id="setInterviewData">Aseta Haastattelu</button>
-    <br />
-    <div>
-      <label for="newInterviewPerson">Lisää henkilö:</label>
-      <input id="newInterviewPerson" type="text" />
-    </div>
-    <button id="addInterviewPerson">Lisää</button>
+<body>
+  <div class="container">
+    <select id="interview-left-person"></select>
+    <select id="interview-right-person"></select>
+  </div>
+  <div class="container">
+    <input id="interview-left-description" placeholder="Kuvaus" />
+    <input id="interview-right-description" placeholder="Kuvaus" />
+  </div>
 
-    <script>
-      const speedcontrolBundle = "nodecg-speedcontrol";
+  <button id="setInterviewData">Aseta Haastattelu</button>
 
-      const runDataArray = nodecg.Replicant("runDataArray", speedcontrolBundle);
-      const allPeople = nodecg.Replicant("allCommentators", speedcontrolBundle);
+  <script>
+    const speedcontrolBundle = "nodecg-speedcontrol";
 
-      const interviewData = nodecg.Replicant(
-        "interviewData",
-        speedcontrolBundle,
-      );
+    const runDataArray = nodecg.Replicant("runDataArray", speedcontrolBundle);
+    const allPeople = nodecg.Replicant("allCommentators", speedcontrolBundle);
 
-      const setInterviewButton = document.getElementById("setInterviewData");
-      const addInterviewPersonButton =
-        document.getElementById("addInterviewPerson");
+    const interviewData = nodecg.Replicant(
+      "interviewData",
+      speedcontrolBundle,
+    );
 
-      NodeCG.waitForReplicants(runDataArray, allPeople, interviewData).then(
-        () => {
-          runDataArray.on("change", (newVal) => {
-            const peopleSet = new Set(allPeople.value);
+    const setInterviewButton = document.getElementById("setInterviewData");
+    const addInterviewPersonButton =
+      document.getElementById("addInterviewPerson");
 
-            newVal.forEach((run) => {
-              run.teams.forEach((team) => {
-                team.players.forEach((player) => {
-                  peopleSet.add(player.name);
-                });
+    NodeCG.waitForReplicants(runDataArray, allPeople, interviewData).then(
+      () => {
+        runDataArray.on("change", (newVal) => {
+          const peopleSet = new Set(allPeople.value);
+
+          newVal.forEach((run) => {
+            run.teams.forEach((team) => {
+              team.players.forEach((player) => {
+                peopleSet.add(player.name);
               });
             });
-
-            allPeople.value = Array.from(peopleSet);
           });
 
-          allPeople.on("change", (newVal) => {
-            const leftSelect = document.getElementById("interview-left-person");
-            const rightSelect = document.getElementById(
-              "interview-right-person",
-            );
+          allPeople.value = Array.from(peopleSet);
+        });
 
-            leftSelect.innerHTML = "";
-            rightSelect.innerHTML = "";
+        allPeople.on("change", (newVal) => {
+          const leftSelect = document.getElementById("interview-left-person");
+          const rightSelect = document.getElementById(
+            "interview-right-person",
+          );
 
-            const emptyOption = document.createElement("option");
+          leftSelect.innerHTML = "";
+          rightSelect.innerHTML = "";
 
-            leftSelect.appendChild(emptyOption);
-            rightSelect.appendChild(emptyOption.cloneNode(true));
+          const emptyOption = document.createElement("option");
 
-            newVal.forEach((person) => {
-              const leftOption = document.createElement("option");
-              leftOption.value = person;
-              leftOption.text = person;
+          leftSelect.appendChild(emptyOption);
+          rightSelect.appendChild(emptyOption.cloneNode(true));
 
-              const rightOption = leftOption.cloneNode(true);
+          newVal.forEach((person) => {
+            const leftOption = document.createElement("option");
+            leftOption.value = person;
+            leftOption.text = person;
 
-              if (person === interviewData.value?.left) {
-                leftOption.selected = true;
-              }
-              if (person === interviewData.value?.right) {
-                rightOption.selected = true;
-              }
+            const rightOption = leftOption.cloneNode(true);
 
-              leftSelect.appendChild(leftOption);
-              rightSelect.appendChild(rightOption);
-            });
+            if (person === interviewData.value?.left) {
+              leftOption.selected = true;
+            }
+            if (person === interviewData.value?.right) {
+              rightOption.selected = true;
+            }
+
+            leftSelect.appendChild(leftOption);
+            rightSelect.appendChild(rightOption);
           });
+        });
 
-          interviewData.on("change", (newVal) => {
-            if (!newVal) return;
+        interviewData.on("change", (newVal) => {
+          if (!newVal) return;
 
-            document.getElementById("interview-left-description").value =
-              newVal.leftDesc || "";
-            document.getElementById("interview-right-description").value =
-              newVal.rightDesc || "";
-          });
-        },
-      );
+          document.getElementById("interview-left-description").value =
+            newVal.leftDesc || "";
+          document.getElementById("interview-right-description").value =
+            newVal.rightDesc || "";
+        });
+      },
+    );
 
-      setInterviewButton.onclick = () => {
-        const leftSelect = document.getElementById("interview-left-person");
-        const rightSelect = document.getElementById("interview-right-person");
+    setInterviewButton.onclick = () => {
+      const leftSelect = document.getElementById("interview-left-person");
+      const rightSelect = document.getElementById("interview-right-person");
 
-        const leftName =
-          leftSelect.options[leftSelect.selectedIndex]?.value || "";
-        const rightName =
-          rightSelect.options[rightSelect.selectedIndex]?.value || "";
+      const leftName =
+        leftSelect.options[leftSelect.selectedIndex]?.value || "";
+      const rightName =
+        rightSelect.options[rightSelect.selectedIndex]?.value || "";
 
-        const leftDesc = document.getElementById(
-          "interview-left-description",
-        ).value;
-        const rightDesc = document.getElementById(
-          "interview-right-description",
-        ).value;
+      const leftDesc = document.getElementById(
+        "interview-left-description",
+      ).value;
+      const rightDesc = document.getElementById(
+        "interview-right-description",
+      ).value;
 
-        interviewData.value = {
-          left: leftName,
-          right: rightName,
-          leftDesc: leftDesc,
-          rightDesc: rightDesc,
-        };
+      interviewData.value = {
+        left: leftName,
+        right: rightName,
+        leftDesc: leftDesc,
+        rightDesc: rightDesc,
       };
+    };
+  </script>
+</body>
 
-      addInterviewPersonButton.onclick = () => {
-        const input = document.getElementById("newInterviewPerson");
-        const value = input.value.trim();
-
-        if (value && !allPeople.value.includes(value)) {
-          allPeople.value.push(value);
-        }
-
-        input.value = "";
-      };
-    </script>
-  </body>
 </html>

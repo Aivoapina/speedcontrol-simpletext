@@ -93,11 +93,6 @@
     </div>
     <button id="setProducer">Aseta tuottaja</button>
     <br />
-    <div>
-      <label for="newCommentator">Lisää kommentoija:</label>
-      <input id="newCommentator" type="text" />
-    </div>
-    <button id="addCommentator">Lisää</button>
   </div>
 
   <script>
@@ -116,7 +111,6 @@
     );
 
     const setCommentatorsButton = document.getElementById("setCommentators");
-    const addCommentatorButton = document.getElementById("addCommentator");
     const setProducerButton = document.getElementById("setProducer");
 
     NodeCG.waitForReplicants(
@@ -215,13 +209,6 @@
       producerReplicant.value = producerValue;
     };
 
-    addCommentatorButton.onclick = () => {
-      const newCommentator = document.getElementById("newCommentator");
-
-      if (!allCommentators.value.includes(newCommentator.value)) {
-        allCommentators.value.push(newCommentator.value);
-      }
-    };
   </script>
 </body>
 
