@@ -64,6 +64,24 @@ $(() => {
     typeof value === "string" ? value.trim() : "";
 
   function renderNameSlots() {
+    const isRaceLayout = player1.length && player2.length;
+
+    if (isRaceLayout) {
+      const commentatorSlot = document.getElementById("commentatorLeft");
+
+      if (!commentatorSlot) return;
+
+      const name = commentatorNames.left || commentatorNames.right;
+
+      commentatorSlot.innerHTML = name
+        ? `<i class="fa-solid fa-sharp fa-headset"></i> ${name}`
+        : "";
+
+      commentatorSlot.classList.toggle("no_display", !name);
+
+      return;
+    }
+
     const slots = ["nameSlotLeft", "nameSlotCenter", "nameSlotRight"]
       .map(id => document.getElementById(id));
 
