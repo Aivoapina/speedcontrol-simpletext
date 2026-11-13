@@ -1,215 +1,224 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/common.css" />
+    <style>
+      .container,
+      .radioContainer {
+        display: flex;
+        justify-content: space-evenly;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" href="css/common.css" />
-  <style>
-    .container,
-    .radioContainer {
-      display: flex;
-      justify-content: space-evenly;
-    }
+      .radioContainer {
+        margin-bottom: 20px;
+      }
 
-    .radioContainer {
-      margin-bottom: 20px;
-    }
+      .container select {
+        flex-grow: 1;
+      }
 
-    .container select {
-      flex-grow: 1;
-    }
+      .player-position-options {
+        display: flex;
+        gap: 8px;
+      }
 
-    .player-position-options {
-      display: flex;
-      gap: 8px;
-    }
+      .player-position-options label {
+        flex: 1;
+        min-width: 0;
+        cursor: pointer;
+        text-align: center;
+      }
 
-    .player-position-options label {
-      flex: 1;
-      min-width: 0;
-      cursor: pointer;
-      text-align: center;
-    }
+      .player-position-options input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
 
-    .player-position-options input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-    }
+      .player-position-options span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 6px;
+        background: #3f495c;
+        color: #ccc;
+      }
 
-    .player-position-options span {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 30px;
-      padding: 10px;
-      border: 1px solid #555;
-      border-radius: 6px;
-      background: #3f495c;
-      color: #ccc;
-    }
+      /* Hover effect */
+      .player-position-options label:hover span {
+        background: #606f8c;
+      }
 
-    /* Hover effect */
-    .player-position-options label:hover span {
-      background: #606f8c;
-    }
+      /* Selected option */
+      .player-position-options input:checked + span {
+        background: #3c67c2;
+        border-color: #3b82f6;
+        color: white;
+      }
+    </style>
+  </head>
 
-    /* Selected option */
-    .player-position-options input:checked+span {
-      background: #3c67c2;
-      border-color: #3b82f6;
-      color: white;
-    }
-  </style>
-</head>
+  <body>
+    <div>
+      <div class="container">
+        <select id="commentator-left"></select>
+        <select id="commentator-right"></select>
+      </div>
+      <button id="setCommentators">Aseta Selostaja</button>
+      <br />
+      <div class="container player-position-options">
+        <label>
+          <input
+            type="radio"
+            name="playerPosition"
+            value="playerPositionLeft"
+          />
+          <span>Pelaaja<br />vasemmalla</span>
+        </label>
 
-<body>
-  <div>
-    <div class="container">
-      <select id="commentator-left"></select>
-      <select id="commentator-right"></select>
+        <label>
+          <input
+            type="radio"
+            name="playerPosition"
+            value="playerPositionCenter"
+          />
+          <span>Pelaaja<br />keskellä</span>
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="playerPosition"
+            value="playerPositionRight"
+          />
+          <span>Pelaaja<br />oikealla</span>
+        </label>
+      </div>
+      <br />
+      <div class="container">
+        <select id="producer"></select>
+      </div>
+      <button id="setProducer">Aseta tuottaja</button>
+      <br />
     </div>
-    <button id="setCommentators">Aseta Selostaja</button>
-    <br />
-    <div class="container player-position-options">
-      <label>
-        <input type="radio" name="playerPosition" value="playerPositionLeft">
-        <span>Pelaaja<br>vasemmalla</span>
-      </label>
 
-      <label>
-        <input type="radio" name="playerPosition" value="playerPositionCenter">
-        <span>Pelaaja<br>keskellä</span>
-      </label>
+    <script>
+      const speedcontrolBundle = "nodecg-speedcontrol";
 
-      <label>
-        <input type="radio" name="playerPosition" value="playerPositionRight">
-        <span>Pelaaja<br>oikealla</span>
-      </label>
-    </div>
-    <br />
-    <div class="container">
-      <select id="producer"></select>
-    </div>
-    <button id="setProducer">Aseta tuottaja</button>
-    <br />
-  </div>
+      const runDataArray = nodecg.Replicant("runDataArray", speedcontrolBundle);
+      const allCommentators = nodecg.Replicant(
+        "allCommentators",
+        speedcontrolBundle,
+      );
+      const playerPosition = nodecg.Replicant("playerPosition");
+      const commentators = nodecg.Replicant("commentators", speedcontrolBundle);
+      const producerReplicant = nodecg.Replicant(
+        "producer",
+        speedcontrolBundle,
+      );
 
-  <script>
-    const speedcontrolBundle = "nodecg-speedcontrol";
+      const setCommentatorsButton = document.getElementById("setCommentators");
+      const setProducerButton = document.getElementById("setProducer");
 
-    const runDataArray = nodecg.Replicant("runDataArray", speedcontrolBundle);
-    const allCommentators = nodecg.Replicant(
-      "allCommentators",
-      speedcontrolBundle,
-    );
-    const playerPosition = nodecg.Replicant("playerPosition");
-    const commentators = nodecg.Replicant("commentators", speedcontrolBundle);
-    const producerReplicant = nodecg.Replicant(
-      "producer",
-      speedcontrolBundle,
-    );
+      NodeCG.waitForReplicants(
+        runDataArray,
+        allCommentators,
+        commentators,
+      ).then(() => {
+        runDataArray.on("change", (newVal) => {
+          const commentatorSet = new Set(allCommentators.value);
 
-    const setCommentatorsButton = document.getElementById("setCommentators");
-    const setProducerButton = document.getElementById("setProducer");
-
-    NodeCG.waitForReplicants(
-      runDataArray,
-      allCommentators,
-      commentators,
-    ).then(() => {
-      runDataArray.on("change", (newVal) => {
-        const commentatorSet = new Set(allCommentators.value);
-
-        newVal.forEach((run) => {
-          run.teams.forEach((team) => {
-            team.players.forEach((player) => {
-              commentatorSet.add(player.name);
+          newVal.forEach((run) => {
+            run.teams.forEach((team) => {
+              team.players.forEach((player) => {
+                commentatorSet.add(player.name);
+              });
             });
           });
+          allCommentators.value = Array.from(commentatorSet);
         });
-        allCommentators.value = Array.from(commentatorSet);
+
+        allCommentators.on("change", (newVal) => {
+          const left = document.getElementById("commentator-left");
+          const right = document.getElementById("commentator-right");
+          const producer = document.getElementById("producer");
+
+          left.innerHTML = "";
+          right.innerHTML = "";
+          producer.innerHTML = "";
+
+          const option = document.createElement("option");
+
+          left.appendChild(option);
+          right.appendChild(option.cloneNode(true));
+          producer.appendChild(option.cloneNode(true));
+
+          newVal.forEach((player) => {
+            const leftOption = document.createElement("option");
+            leftOption.value = player;
+            leftOption.text = player;
+
+            const rightOption = leftOption.cloneNode(true);
+            const producerOption = leftOption.cloneNode(true);
+
+            if (player === commentators.value.left) {
+              leftOption.selected = true;
+            } else if (player === commentators.value.right) {
+              rightOption.selected = true;
+            } else if (player === producerReplicant.value) {
+              producerOption.selected = true;
+            }
+            left.appendChild(leftOption);
+            right.appendChild(rightOption);
+            producer.appendChild(producerOption);
+          });
+        });
       });
 
-      allCommentators.on("change", (newVal) => {
+      const playerPositionRadios = document.querySelectorAll(
+        'input[name="playerPosition"]',
+      );
+
+      playerPositionRadios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+          if (radio.checked) {
+            playerPosition.value = radio.value;
+          }
+        });
+      });
+
+      playerPosition.on("change", (newVal) => {
+        playerPositionRadios.forEach((radio) => {
+          radio.checked = radio.value === newVal;
+        });
+      });
+
+      playerPosition.on("change", (newVal) => {
+        console.log("Player position updated:", newVal);
+      });
+
+      setCommentatorsButton.onclick = () => {
         const left = document.getElementById("commentator-left");
         const right = document.getElementById("commentator-right");
-        const producer = document.getElementById("producer");
 
-        left.innerHTML = "";
-        right.innerHTML = "";
-        producer.innerHTML = "";
+        const leftValue = left.options[left.selectedIndex].value;
+        const rightValue = right.options[right.selectedIndex].value;
 
-        const option = document.createElement("option");
-
-        left.appendChild(option);
-        right.appendChild(option.cloneNode(true));
-        producer.appendChild(option.cloneNode(true));
-
-        newVal.forEach((player) => {
-          const leftOption = document.createElement("option");
-          leftOption.value = player;
-          leftOption.text = player;
-
-          const rightOption = leftOption.cloneNode(true);
-          const producerOption = leftOption.cloneNode(true);
-
-          if (player === commentators.value.left) {
-            leftOption.selected = true;
-          } else if (player === commentators.value.right) {
-            rightOption.selected = true;
-          } else if (player === producerReplicant.value) {
-            producerOption.selected = true;
-          }
-          left.appendChild(leftOption);
-          right.appendChild(rightOption);
-          producer.appendChild(producerOption);
-        });
-      });
-    });
-
-    const playerPositionRadios = document.querySelectorAll(
-      'input[name="playerPosition"]'
-    );
-
-    playerPositionRadios.forEach((radio) => {
-      radio.addEventListener("change", () => {
-        if (radio.checked) {
-          playerPosition.value = radio.value;
-        }
-      });
-    });
-
-    playerPosition.on("change", (newVal) => {
-      playerPositionRadios.forEach((radio) => {
-        radio.checked = radio.value === newVal;
-      });
-    });
-
-    playerPosition.on("change", (newVal) => {
-      console.log("Player position updated:", newVal);
-    });
-
-    setCommentatorsButton.onclick = () => {
-      const left = document.getElementById("commentator-left");
-      const right = document.getElementById("commentator-right");
-
-      const leftValue = left.options[left.selectedIndex].value;
-      const rightValue = right.options[right.selectedIndex].value;
-
-      commentators.value = {
-        left: leftValue,
-        right: rightValue,
+        commentators.value = {
+          left: leftValue,
+          right: rightValue,
+        };
       };
-    };
 
-    setProducerButton.onclick = () => {
-      const producer = document.getElementById("producer");
-      const producerValue = producer.options[producer.selectedIndex].value;
-      producerReplicant.value = producerValue;
-    };
-
-  </script>
-</body>
-
+      setProducerButton.onclick = () => {
+        const producer = document.getElementById("producer");
+        const producerValue = producer.options[producer.selectedIndex].value;
+        producerReplicant.value = producerValue;
+      };
+    </script>
+  </body>
 </html>

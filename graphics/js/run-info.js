@@ -60,8 +60,7 @@ $(() => {
     if (newVal) updateSceneFields(newVal);
   });
 
-  const cleanName = (value) =>
-    typeof value === "string" ? value.trim() : "";
+  const cleanName = (value) => (typeof value === "string" ? value.trim() : "");
 
   function renderNameSlots() {
     const isRaceLayout = player1.length && player2.length;
@@ -82,14 +81,16 @@ $(() => {
       return;
     }
 
-    const slots = ["nameSlotLeft", "nameSlotCenter", "nameSlotRight"]
-      .map(id => document.getElementById(id));
+    const slots = ["nameSlotLeft", "nameSlotCenter", "nameSlotRight"].map(
+      (id) => document.getElementById(id),
+    );
 
-    const playerIndex = {
-      playerPositionLeft: 0,
-      playerPositionCenter: 1,
-      playerPositionRight: 2,
-    }[selectedPlayerPosition] ?? 1;
+    const playerIndex =
+      {
+        playerPositionLeft: 0,
+        playerPositionCenter: 1,
+        playerPositionRight: 2,
+      }[selectedPlayerPosition] ?? 1;
 
     let commentatorIndex = 0;
 
@@ -98,9 +99,10 @@ $(() => {
 
       slot.replaceChildren();
 
-      const name = index === playerIndex
-        ? ""
-        : [commentatorNames.left, commentatorNames.right][commentatorIndex++];
+      const name =
+        index === playerIndex
+          ? ""
+          : [commentatorNames.left, commentatorNames.right][commentatorIndex++];
 
       if (index === playerIndex) {
         slot.append(player[0]);
