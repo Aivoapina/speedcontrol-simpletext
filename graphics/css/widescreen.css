@@ -11,15 +11,12 @@
 .nametags-container {
   width: 100%;
   display: flex;
-  flex-direction: column;
   gap: 10px;
-  font-size: 25px;
+  font-size: 22px;
 }
 
-#commentator-container {
-  display: flex;
-  justify-content: space-around;
-  font-size: 22px;
+.nametags-container div {
+  flex-grow: 1;
 }
 
 .imgContainer {
